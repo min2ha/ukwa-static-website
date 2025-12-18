@@ -1,0 +1,42 @@
+<header class="site-header">
+  <div class="banner">
+    <div class="container">
+      <div class="banner-content">
+        <div class="site-logo">
+          <a href="{{ .Site.BaseURL }}{{ if ne .Site.Language.Lang "en" }}{{ .Site.Language.Lang }}/{{ end }}">
+            <img src="{{ "images/logo/ukwa-2018-onwhite-close.svg" | relURL }}" alt="UK Web Archive" class="logo-image">
+          </a>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            {{ range .Site.Menus.main }}
+            <li>
+              <a href="{{ .URL }}" {{ if $.IsMenuCurrent "main" . }}class="active"{{ end }}>
+                {{ .Name }}
+              </a>
+            </li>
+            {{ end }}
+          </ul>
+        </nav>
+        <div class="language-switcher">
+          {{ range .Site.Languages }}
+            {{ if ne $.Site.Language.Lang .Lang }}
+              <a href="/{{ if ne .Lang "en" }}{{ .Lang }}/{{ end }}" class="lang-link">
+                {{ .LanguageName }}
+              </a>
+            {{ end }}
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-info-stripe">
+    <div class="container">
+      <div class="page-info-content">
+        <span class="page-section">UK Web Archive</span>
+        <span class="page-separator">&gt;</span>
+        <span class="page-title">{{ if .Section }}{{ .Section | humanize | title }} &gt; {{ end }}{{ .Title }}</span>
+      </div>
+    </div>
+  </div>
+</header>

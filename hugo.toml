@@ -1,0 +1,84 @@
+baseURL = 'https://ukwa.example.org/'
+title = 'UK Web Archive'
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
+
+# Enable multilingual support
+[languages]
+  [languages.en]
+    languageName = 'English'
+    weight = 1
+    title = 'UK Web Archive'
+    [languages.en.params]
+      description = 'Preserving the UK Web for future generations'
+    [[languages.en.menu.main]]
+      name = 'Home'
+      url = '/'
+      weight = 1
+    [[languages.en.menu.main]]
+      name = 'Save a UK Website'
+      url = '/save-website/'
+      weight = 2
+    [[languages.en.menu.main]]
+      name = 'About Us'
+      url = '/about/'
+      weight = 3
+    [[languages.en.menu.main]]
+      name = 'Contact Us'
+      url = '/contact/'
+      weight = 4
+
+  [languages.cy]
+    languageName = 'Cymraeg'
+    weight = 2
+    title = 'Archif We y DU'
+    [languages.cy.params]
+      description = "Cadw'r We yn y DU ar gyfer cenedlaethau'r dyfodol"
+    [[languages.cy.menu.main]]
+      name = 'Hafan'
+      url = '/cy/'
+      weight = 1
+    [[languages.cy.menu.main]]
+      name = 'Cadw Gwefan y DU'
+      url = '/cy/save-website/'
+      weight = 2
+    [[languages.cy.menu.main]]
+      name = 'Amdanom Ni'
+      url = '/cy/about/'
+      weight = 3
+    [[languages.cy.menu.main]]
+      name = 'Cysylltwch â Ni'
+      url = '/cy/contact/'
+      weight = 4
+
+  [languages.gd]
+    languageName = 'Gàidhlig'
+    weight = 3
+    title = 'Tasglann Lìn na RA'
+    [languages.gd.params]
+      description = "A' gleidheadh Lìon na RA airson ginealaich ri teachd"
+    [[languages.gd.menu.main]]
+      name = 'Dachaigh'
+      url = '/gd/'
+      weight = 1
+    [[languages.gd.menu.main]]
+      name = 'Sàbhail Làrach-lìn na RA'
+      url = '/gd/save-website/'
+      weight = 2
+    [[languages.gd.menu.main]]
+      name = 'Mu ar Deidhinn'
+      url = '/gd/about/'
+      weight = 3
+    [[languages.gd.menu.main]]
+      name = 'Cuir Fios Thugainn'
+      url = '/gd/contact/'
+      weight = 4
+
+[params]
+  description = 'UK Web Archive - Preserving the UK Web'
+  author = 'UK Web Archive'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

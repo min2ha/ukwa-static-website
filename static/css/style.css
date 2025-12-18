@@ -1,0 +1,426 @@
+/* UK Web Archive - Institutional Style CSS */
+/* Inspired by British Library and BBC formal institutional design */
+
+/* Color Palette */
+:root {
+  --primary-blue: #003087;      /* Deep institutional blue */
+  --secondary-blue: #0055A5;    /* Lighter blue for accents */
+  --text-blue: rgb(12, 73, 176); /* Text blue */
+  --link-blue: #005EA5;         /* Link blue */
+  --link-hover: #002B5C;        /* Darker blue on hover */
+  --white: #FFFFFF;
+  --light-grey: #F5F5F5;
+  --border-grey: #CCCCCC;
+  --text-dark: #222222;
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-blue);
+  background-color: var(--white);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header and Banner */
+.site-header {
+  background-color: var(--white);
+  border-bottom: 4px solid var(--primary-blue);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.banner {
+  background-color: var(--white);
+  padding: 20px 0;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Page Info Stripe */
+.page-info-stripe {
+  background: linear-gradient(135deg, rgb(12, 73, 176) 0%, rgb(46, 109, 217) 100%);
+  color: #f8f9fa;
+  padding: 12px 0;
+}
+
+.page-info-stripe .container {
+  max-width: 1800px; /* 50% wider than default 1200px */
+}
+
+.page-info-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.425rem; /* Increased by 50% from 0.95rem */
+  font-weight: 500;
+}
+
+.page-section {
+  opacity: 0.9;
+}
+
+.page-separator {
+  opacity: 0.7;
+  font-size: 1.1rem;
+}
+
+.page-title {
+  font-weight: 600;
+}
+
+/* Site Logo */
+.site-logo {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.site-logo a {
+  display: block;
+  line-height: 1;
+  transition: opacity 0.3s ease;
+}
+
+.site-logo a:hover {
+  opacity: 0.8;
+}
+
+.logo-image {
+  height: 120px; /* 100% bigger (doubled from 60px) */
+  width: auto;
+  display: block;
+}
+
+/* Main Navigation */
+.main-nav {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.main-nav li {
+  margin: 0;
+}
+
+.main-nav a {
+  color: var(--text-blue);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 10px 15px;
+  display: block;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--primary-blue);
+  border-bottom-color: var(--secondary-blue);
+}
+
+/* Language Switcher */
+.language-switcher {
+  display: flex;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.language-switcher .lang-link {
+  color: var(--link-blue);
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 8px 12px;
+  border: 1px solid var(--border-grey);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.language-switcher .lang-link:hover {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border-color: var(--primary-blue);
+}
+
+/* Main Content */
+.main-content {
+  min-height: 60vh;
+  padding: 40px 0;
+}
+
+.page-content,
+.page-list {
+  background-color: var(--white);
+}
+
+.page-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--light-grey);
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: var(--primary-blue);
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.page-description {
+  font-size: 1.2rem;
+  color: var(--text-blue);
+  line-height: 1.5;
+}
+
+/* Content Styling */
+.content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgb(12, 73, 176);
+}
+
+.content h2 {
+  font-size: 2rem;
+  color: var(--primary-blue);
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.content h3 {
+  font-size: 1.5rem;
+  color: var(--text-blue);
+  margin-top: 25px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.content p {
+  margin-bottom: 20px;
+}
+
+.content a {
+  color: var(--link-blue);
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.content a:hover {
+  color: var(--link-hover);
+}
+
+.content ul,
+.content ol {
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.content li {
+  margin-bottom: 10px;
+}
+
+/* Page List */
+.page-list {
+  margin-top: 40px;
+}
+
+.page-summary {
+  padding: 25px;
+  margin-bottom: 25px;
+  border: 1px solid var(--border-grey);
+  border-left: 4px solid var(--secondary-blue);
+  background-color: var(--light-grey);
+  transition: all 0.3s ease;
+}
+
+.page-summary:hover {
+  box-shadow: 0 2px 8px rgba(0, 48, 135, 0.15);
+  border-left-color: var(--primary-blue);
+}
+
+.page-summary h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.page-summary h2 a {
+  color: var(--primary-blue);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.page-summary h2 a:hover {
+  color: var(--link-blue);
+  text-decoration: underline;
+}
+
+.page-summary p {
+  color: var(--text-blue);
+  font-size: 1.05rem;
+}
+
+/* Footer Logos Section (White Background) */
+.footer-logos-section {
+  background-color: var(--white);
+  padding: 40px 0;
+  margin-top: 60px;
+  border-top: 1px solid var(--border-grey);
+}
+
+.footer-logos-content {
+  text-align: center;
+}
+
+.footer-logo-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Footer */
+.site-footer {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  padding: 30px 0;
+  margin-top: 0;
+  border-top: 4px solid var(--secondary-blue);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.footer-text {
+  text-align: center;
+}
+
+.footer-text p {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .banner-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo-image {
+    height: 100px; /* 100% bigger (doubled from 50px) */
+  }
+
+  .main-nav {
+    width: 100%;
+  }
+
+  .main-nav ul {
+    justify-content: flex-start;
+    gap: 15px;
+  }
+
+  .main-nav a {
+    font-size: 1rem;
+    padding: 8px 12px;
+  }
+
+  .language-switcher {
+    width: 100%;
+  }
+
+  .page-info-content {
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo-image {
+    height: 80px; /* 100% bigger (doubled from 40px) */
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .main-nav a {
+    padding: 10px;
+  }
+
+  .page-info-stripe {
+    padding: 10px 0;
+  }
+
+  .page-info-content {
+    font-size: 0.85rem;
+    gap: 8px;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .content h2 {
+    font-size: 1.5rem;
+  }
+
+  .content h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Accessibility */
+a:focus,
+button:focus {
+  outline: 3px solid var(--secondary-blue);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .site-header,
+  .site-footer,
+  .language-switcher {
+    display: none;
+  }
+
+  body {
+    color: #000;
+  }
+
+  a {
+    text-decoration: underline;
+    color: #000;
+  }
+}

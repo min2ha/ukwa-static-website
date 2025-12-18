@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  hugo:
+    image: klakegg/hugo:0.111.3-ext-alpine
+    container_name: ukwa-hugo-dev
+    command: server --bind=0.0.0.0 --baseURL=http://localhost:1313 --buildDrafts --buildFuture --watch
+    volumes:
+      - ./:/src
+    ports:
+      - "1313:1313"
+    environment:
+      - HUGO_ENV=development
+    restart: unless-stopped
+    networks:
+      - ukwa-network
+
+  # Production build service (optional - run separately)
+  hugo-build:
+    image: klakegg/hugo:0.111.3-ext-alpine
+    container_name: ukwa-hugo-build
+    command: --minify --cleanDestinationDir
+    volumes:
+      - ./:/src
+      - ./public:/src/public
+    environment:
+      - HUGO_ENV=production
+    profiles:
+      - build
+    networks:
+      - ukwa-network
+
+networks:
+  ukwa-network:
+    driver: bridge
