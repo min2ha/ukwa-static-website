@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-white text-gray-800 antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  }
+  .dark body {
+    @apply bg-dark-950 text-dark-100;
+  }
+}
+
+@layer components {
+  /* Markdown prose styling for dark theme */
+  .prose-dark h1 {
+    @apply text-3xl md:text-4xl font-bold text-dark-50 mb-6 mt-8 leading-tight;
+  }
+  .prose-dark h2 {
+    @apply text-2xl md:text-3xl font-semibold text-dark-100 mb-4 mt-10 pb-2 border-b border-dark-700;
+  }
+  .prose-dark h3 {
+    @apply text-xl font-semibold text-dark-200 mb-3 mt-6;
+  }
+  .prose-dark h4 {
+    @apply text-lg font-semibold text-dark-200 mb-2 mt-5;
+  }
+  .prose-dark p {
+    @apply text-dark-300 leading-relaxed mb-5;
+  }
+  .prose-dark a {
+    @apply text-accent-primary hover:text-blue-400 underline underline-offset-2 transition-colors;
+  }
+  .prose-dark ul, .prose-dark ol {
+    @apply ml-6 mb-5 text-dark-300 space-y-2;
+  }
+  .prose-dark ul {
+    @apply list-disc;
+  }
+  .prose-dark ol {
+    @apply list-decimal;
+  }
+  .prose-dark li {
+    @apply leading-relaxed;
+  }
+  .prose-dark li > strong {
+    @apply text-dark-100;
+  }
+  .prose-dark strong {
+    @apply text-dark-100 font-semibold;
+  }
+  .prose-dark blockquote {
+    @apply border-l-4 border-accent-primary pl-4 italic text-dark-400 my-6;
+  }
+  .prose-dark hr {
+    @apply border-dark-700 my-8;
+  }
+  .prose-dark code {
+    @apply bg-dark-800 text-dark-200 px-1.5 py-0.5 rounded text-sm;
+  }
+  .prose-dark pre {
+    @apply bg-dark-900 border border-dark-700 rounded-lg p-4 my-6 overflow-x-auto;
+  }
+  .prose-dark pre code {
+    @apply bg-transparent p-0;
+  }
+
+  /* Markdown prose styling for light theme */
+  .prose-light h1 {
+    @apply text-3xl md:text-4xl font-bold text-blue-900 mb-6 mt-8 leading-tight;
+  }
+  .prose-light h2 {
+    @apply text-2xl md:text-3xl font-semibold text-blue-800 mb-4 mt-10 pb-2 border-b border-gray-200;
+  }
+  .prose-light h3 {
+    @apply text-xl font-semibold text-blue-800 mb-3 mt-6;
+  }
+  .prose-light h4 {
+    @apply text-lg font-semibold text-blue-800 mb-2 mt-5;
+  }
+  .prose-light p {
+    @apply text-gray-700 leading-relaxed mb-5;
+  }
+  .prose-light a {
+    @apply text-blue-600 hover:text-blue-800 underline underline-offset-2 transition-colors;
+  }
+  .prose-light ul, .prose-light ol {
+    @apply ml-6 mb-5 text-gray-700 space-y-2;
+  }
+  .prose-light ul {
+    @apply list-disc;
+  }
+  .prose-light ol {
+    @apply list-decimal;
+  }
+  .prose-light li {
+    @apply leading-relaxed;
+  }
+  .prose-light li > strong {
+    @apply text-gray-900;
+  }
+  .prose-light strong {
+    @apply text-gray-900 font-semibold;
+  }
+  .prose-light blockquote {
+    @apply border-l-4 border-blue-600 pl-4 italic text-gray-500 my-6;
+  }
+  .prose-light hr {
+    @apply border-gray-200 my-8;
+  }
+  .prose-light code {
+    @apply bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded text-sm;
+  }
+  .prose-light pre {
+    @apply bg-gray-50 border border-gray-200 rounded-lg p-4 my-6 overflow-x-auto;
+  }
+  .prose-light pre code {
+    @apply bg-transparent p-0;
+  }
+
+  /* Navigation link styling */
+  .nav-link {
+    @apply px-4 py-2 rounded-lg text-blue-800 hover:bg-gray-100 hover:text-blue-900 transition-colors font-medium text-sm;
+  }
+  .nav-link.active {
+    @apply text-blue-900 bg-blue-50 border-b-2 border-blue-600;
+  }
+  .dark .nav-link {
+    @apply text-dark-300 hover:bg-dark-800 hover:text-dark-100;
+  }
+  .dark .nav-link.active {
+    @apply text-accent-primary bg-dark-800/50 border-b-0;
+  }
+
+  /* Language switcher buttons */
+  .lang-btn {
+    @apply px-3 py-1.5 text-sm rounded-md border border-gray-400 text-gray-600 hover:bg-accent-primary hover:text-white hover:border-accent-primary transition-all;
+  }
+  .lang-btn.active {
+    @apply bg-accent-primary text-white border-accent-primary;
+  }
+  .dark .lang-btn {
+    @apply border-dark-600 text-dark-300;
+  }
+  .dark .lang-btn.active {
+    @apply bg-accent-primary text-white border-accent-primary;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.dark.600') theme('colors.dark.800');
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: theme('colors.dark.800');
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: theme('colors.dark.600');
+    border-radius: 3px;
+  }
+}
