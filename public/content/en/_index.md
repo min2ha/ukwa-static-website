@@ -3,31 +3,52 @@ title: "Home"
 description: "UK Web Archive - Preserving the UK Web for future generations"
 ---
 
-# Welcome to the UK Web Archive
+**Welcome to the UK Web Archive**
 
-The UK Web Archive is dedicated to preserving the digital heritage of the United Kingdom. We collect, preserve, and provide access to UK websites, ensuring that this valuable cultural and historical resource remains available for researchers, historians, and the general public.
+The UK Web Archive is available online.
 
-## Our Mission
+Following disruption in 2023, the service has been restored. Work to
+rebuild and improve the website is ongoing. At present, you can search
+for archived UK websites by entering a URL in the search bar above.
+Additional functionality will be introduced over time.
 
-We work to capture and archive the UK's web content before it disappears, creating a comprehensive historical record of the UK's digital presence. Our archive includes government websites, cultural institutions, businesses, organizations, and personal websites that tell the story of the UK online.
+Thank you for your patience as development continues.
 
-## Why Archive the Web?
+**About the UK Web Archive**
 
-The web is constantly changing. Websites are updated, redesigned, or taken down entirely. Without archiving, this information is lost forever. The UK Web Archive ensures that:
+The UK Web Archive preserves the digital heritage of the United Kingdom.
+We collect, preserve, and provide access to UK websites to ensure this
+material remains available for research, education, and the public
+record.
+
+**Our Mission**
+
+We capture UK web content before it disappears, creating a lasting
+record of the UK’s digital presence, including government, cultural,
+business, organisational, and personal websites.
+
+**Why Archive the Web?**
+
+Websites change or are removed over time. Archiving ensures that:
 
 - Historical records are preserved
+
 - Research materials remain accessible
+
 - Cultural heritage is protected
+
 - Government information is retained
+
 - Educational resources are maintained
 
-## Get Involved
+**Get Involved**
 
-You can help preserve the UK web by:
+You can contribute by:
 
-- Nominating important UK websites for archiving
-- Supporting our preservation efforts
-- Using our archive for research and education
-- Spreading awareness about digital preservation
+- Nominating UK websites for archiving
 
-Explore our archive and discover the history of the UK web.
+- Using the archive for research and education
+
+- Supporting digital preservation
+
+Explore the archive to discover the history of the UK web.
