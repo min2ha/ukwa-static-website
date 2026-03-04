@@ -4,12 +4,13 @@ export const languages = {
     name: 'English',
     urlPrefix: '',
     siteTitle: 'UK Web Archive',
-    description: 'Preserving the UK Web for future generations',
+    siteSubtitle: 'National Digital Heritage Library',
+    description: 'Preserving the digital heritage of the United Kingdom',
     menu: [
-      { name: 'Home', path: '/', slug: '' },
-      { name: 'Save a UK Website', path: '/save-website', slug: 'save-website' },
-      { name: 'About Us', path: '/about', slug: 'about' },
-      { name: 'Contact Us', path: '/contact', slug: 'contact' },
+      { name: 'Home',           path: '/',             slug: '' },
+      { name: 'Save a Website', path: '/save-website', slug: 'save-website' },
+      { name: 'About',          path: '/about',        slug: 'about' },
+      { name: 'Contact',        path: '/contact',      slug: 'contact' },
     ],
   },
   cy: {
@@ -17,28 +18,30 @@ export const languages = {
     name: 'Cymraeg',
     urlPrefix: '/cy',
     siteTitle: 'Archif We y DU',
-    description: "Cadw'r We yn y DU ar gyfer cenedlaethau'r dyfodol",
+    siteSubtitle: 'Llyfrgell Dreftadaeth Ddigidol Genedlaethol',
+    description: 'Cadw treftadaeth ddigidol y Deyrnas Unedig',
     menu: [
-      { name: 'Hafan', path: '/cy', slug: '' },
-      { name: 'Cadw Gwefan y DU', path: '/cy/save-website', slug: 'save-website' },
-      { name: 'Amdanom Ni', path: '/cy/about', slug: 'about' },
-      { name: 'Cysylltwch \u00e2 Ni', path: '/cy/contact', slug: 'contact' },
+      { name: 'Hafan',              path: '/cy',                  slug: '' },
+      { name: 'Cadw Gwefan',        path: '/cy/save-website',     slug: 'save-website' },
+      { name: 'Amdanom Ni',         path: '/cy/about',            slug: 'about' },
+      { name: 'Cysylltwch â Ni',    path: '/cy/contact',          slug: 'contact' },
     ],
   },
   gd: {
     code: 'gd',
-    name: 'G\u00e0idhlig',
+    name: 'Gàidhlig',
     urlPrefix: '/gd',
-    siteTitle: 'Tasglann L\u00ecn na RA',
-    description: "A' gleidheadh L\u00econ na RA airson ginealaich ri teachd",
+    siteTitle: 'Tasglann Lìn na RA',
+    siteSubtitle: 'Leabharlann Dualchas Didseatach Nàiseanta',
+    description: 'A\' gleidheadh dualchas didseatach na Rìoghachd Aonaichte',
     menu: [
-      { name: 'Dachaigh', path: '/gd', slug: '' },
-      { name: 'S\u00e0bhail L\u00e0rach-l\u00ecn na RA', path: '/gd/save-website', slug: 'save-website' },
-      { name: 'Mu ar Deidhinn', path: '/gd/about', slug: 'about' },
-      { name: 'Cuir Fios Thugainn', path: '/gd/contact', slug: 'contact' },
+      { name: 'Dachaigh',           path: '/gd',              slug: '' },
+      { name: 'Sàbhail Làrach-lìn', path: '/gd/save-website', slug: 'save-website' },
+      { name: 'Mu ar Deidhinn',     path: '/gd/about',        slug: 'about' },
+      { name: 'Cuir Fios Thugainn', path: '/gd/contact',      slug: 'contact' },
     ],
   },
 };
 
 export const defaultLanguage = 'en';
-export const languageOrder = ['en', 'cy', 'gd'];
+export const languageOrder   = ['en', 'cy', 'gd'];

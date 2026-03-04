@@ -1,58 +1,51 @@
 ---
-title: "Save a UK Website"
-description: "Help us preserve UK web content by nominating websites for archiving"
+title: "Nominate a Website"
+description: "Help shape what history remembers — nominate a UK website for archiving"
 ---
 
-# Save a UK Website
+# Nominate a Website
 
-Help preserve the UK's digital heritage by nominating websites for archiving. Your nominations ensure that important UK web content is captured and preserved for future generations.
+You have the power to decide what history remembers.
 
-## How to Nominate a Website
+Every day, UK websites disappear — local news, community projects, campaign pages, indie blogs. Once they're gone, they're gone. But if you nominate them first, we can capture them before they vanish.
 
-You can nominate any UK-based website or web content that you believe should be preserved. This includes:
+## What Can You Nominate?
 
-- **Government and public sector websites** - Official government departments, local councils, public services
-- **Cultural institutions** - Museums, libraries, galleries, heritage sites
-- **Educational resources** - Universities, schools, educational organizations
-- **Community websites** - Local groups, charities, community organizations
-- **Business websites** - Companies, industry associations, professional bodies
-- **Personal blogs and websites** - Individual creators, personal archives
+Anything UK-based that you think deserves to survive. Here are some ideas:
 
-## What Makes a Good Nomination?
+- **News & journalism** — Local papers, independent outlets, newsletters at risk of closing
+- **Activism & campaigns** — Petitions, movements, community organising
+- **Culture & arts** — Bands, zines, galleries, indie creators, fan communities
+- **Government & public sector** — Councils, public bodies, policy documents
+- **Education** — University research, school projects, open learning resources
+- **Personal & community** — Local groups, charities, blogs, personal archives
 
-Consider nominating websites that are:
+> If you'd be sad to see it gone, it's probably worth saving.
 
-- At risk of being lost or changed
-- Of historical or cultural significance
-- Important for research or education
-- Representative of UK digital culture
-- Documenting significant events or movements
-- Creating unique or valuable content
+## Why Your Nomination Matters
 
-## Nomination Process
+We can't catch everything — but you can help. Nominations from the public help us find websites that automated crawlers miss: the niche, the local, the beloved. Your eye on the ground is irreplaceable.
 
-1. **Identify the website** - Note the full URL and any specific pages of importance
-2. **Provide context** - Explain why this website should be archived
-3. **Submit your nomination** - Use our nomination form or contact us directly
-4. **Confirmation** - We'll review your nomination and add it to our archiving queue
+## How to Submit a Nomination
 
-## Archiving Schedule
+1. **Find the URL** — Copy the full web address of the site or page
+2. **Tell us why** — A brief reason helps us prioritise (optional, but useful)
+3. **Send it to us** — Email `web-archivist@bl.uk` with subject: **Website Nomination**
+4. **We'll take it from there** — We review every nomination and add qualifying sites to our crawl schedule
 
-We archive websites at different frequencies depending on their nature:
+## How Often We Archive
 
-- **High priority sites** - Daily or weekly captures
-- **Regularly updated sites** - Monthly captures
-- **Stable sites** - Quarterly or annual captures
-- **Event-based captures** - During significant events or announcements
+Sites are archived at different frequencies based on how dynamic they are:
 
-## Permission and Copyright
+- **Breaking news / events** — Daily or real-time captures
+- **Regularly updated sites** — Weekly or monthly
+- **Stable reference sites** — Quarterly or annually
+- **At-risk sites** — Emergency captures when closure is announced
 
-We work within the UK's legal deposit regulations and intellectual property laws. Website owners can:
+## Copyright & Access
 
-- Request archiving of their own sites
-- Control access to archived versions
-- Update their archiving preferences
+The UK Web Archive operates under the Legal Deposit Libraries Act 2003. Archived sites are available for research access. Website owners can contact us to update their preferences.
 
 ## Questions?
 
-If you have questions about nominating a website or our archiving process, please contact us.
+Email `web-archivist@bl.uk` — we're friendly, we promise.

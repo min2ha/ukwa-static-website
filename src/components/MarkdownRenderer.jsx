@@ -5,7 +5,7 @@ export default function MarkdownRenderer({ content, theme }) {
   const proseClass = theme === 'dark' ? 'prose-dark' : 'prose-light';
 
   return (
-    <div className={`${proseClass} max-w-none`}>
+    <div className={proseClass}>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
         {content}
       </ReactMarkdown>

@@ -1,41 +1,104 @@
 import { useMarkdown } from '../hooks/useMarkdown';
-import MarkdownRenderer from '../components/MarkdownRenderer';
 import PageInfoStripe from '../components/PageInfoStripe';
+import MarkdownRenderer from '../components/MarkdownRenderer';
+import HeraldryDivider from '../components/HeraldryDivider';
+
+function LoadingState({ theme }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-24 gap-4">
+      <div className="heritage-spinner" />
+      <p
+        style={{
+          fontFamily: 'Cinzel, Georgia, serif',
+          color: theme === 'dark' ? 'var(--gold-dark)' : 'var(--navy)',
+          fontSize: '0.72rem',
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+        }}
+      >
+        Loading Archive…
+      </p>
+    </div>
+  );
+}
+
+function ErrorState({ message, theme }) {
+  return (
+    <div className="max-w-2xl mx-auto px-6 py-16 text-center">
+      <p
+        style={{
+          fontFamily: 'UnifrakturMaguntia, cursive',
+          color: theme === 'dark' ? 'var(--gold)' : 'var(--navy)',
+          fontSize: '2.5rem',
+          marginBottom: '0.5rem',
+        }}
+      >
+        Archive Notice
+      </p>
+      <HeraldryDivider
+        gold={theme === 'dark' ? '#9c7a35' : '#c9a84c'}
+        className="my-4"
+      />
+      <p
+        style={{
+          fontFamily: 'Cormorant Garamond, Georgia, serif',
+          color: theme === 'dark' ? 'var(--parchment-dark)' : 'var(--ink)',
+          fontSize: '1.1rem',
+        }}
+      >
+        The requested document could not be retrieved from the archive.
+      </p>
+      {message && (
+        <p
+          className="mt-3 text-sm"
+          style={{
+            fontFamily: 'Courier New, monospace',
+            color: theme === 'dark' ? 'var(--gold-dark)' : 'var(--gold-muted, #7a5f28)',
+          }}
+        >
+          {message}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default function MarkdownPage({ lang, slug, theme }) {
   const { metadata, content, loading, error } = useMarkdown(lang, slug);
+  const isDark = theme === 'dark';
 
-  if (loading) {
-    return (
-      <>
-        <PageInfoStripe title="Loading..." />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent-primary"></div>
-        </div>
-      </>
-    );
-  }
+  if (loading) return <LoadingState theme={theme} />;
+  if (error)   return <ErrorState   message={error} theme={theme} />;
 
-  if (error) {
-    return (
-      <>
-        <PageInfoStripe title="Error" />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="bg-gray-100 dark:bg-dark-900 border border-gray-300 dark:border-dark-700 rounded-xl p-8 text-center max-w-md">
-            <div className="text-accent-danger text-5xl mb-4">!</div>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-dark-100 mb-2">Page Not Found</h2>
-            <p className="text-gray-500 dark:text-dark-400">{error}</p>
-          </div>
-        </div>
-      </>
-    );
-  }
+  const pageTitle = metadata.title || null;
 
   return (
     <>
-      <PageInfoStripe title={metadata.title || ''} />
-      <main className="max-w-4xl mx-auto px-6 py-10">
-        <MarkdownRenderer content={content} theme={theme} />
+      <PageInfoStripe pageTitle={pageTitle} />
+
+      <main className="flex-1 py-10 md:py-14">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 fade-in">
+
+          {/* Ornamental top rule */}
+          <HeraldryDivider
+            gold={isDark ? '#9c7a35' : '#c9a84c'}
+            className="mb-8"
+          />
+
+          {/* Heritage content panel */}
+          <article
+            className="heritage-panel px-6 sm:px-10 py-10 md:py-14"
+            style={{ borderRadius: '2px' }}
+          >
+            <MarkdownRenderer content={content} theme={theme} />
+          </article>
+
+          {/* Ornamental bottom rule */}
+          <HeraldryDivider
+            gold={isDark ? '#9c7a35' : '#c9a84c'}
+            className="mt-8"
+          />
+        </div>
       </main>
     </>
   );

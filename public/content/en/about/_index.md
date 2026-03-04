@@ -1,65 +1,55 @@
 ---
-title: "Contact Us"
-description: "Get in touch with the UK Web Archive team"
+title: "About"
+description: "The story of the UK Web Archive — who we are, what we do, and why it matters"
 ---
 
-# Contact Us
+# About the UK Web Archive
 
-We welcome your questions, suggestions, and feedback. There are several ways to get in touch with the UK Web Archive team.
+We are saving the internet's history so you — and everyone who comes after you — can access it.
 
-## General Enquiries
+The UK Web Archive is one of the world's largest national web archives, operated by **The British Library** and supported by five partner legal deposit libraries. Since 2004, we have been capturing snapshots of UK websites before they change, disappear, or are taken down.
 
-For general questions about the UK Web Archive, our collections, or how to use our services:
+## What We Do
 
-**Email:** web-archivist@bl.uk
+Every day, our automated systems crawl millions of UK web pages — news sites, blogs, government portals, campaign pages, community forums, cultural projects — and preserve them exactly as they appeared. Think of it as a photograph of the internet, taken continuously, for decades.
 
-## Website Nominations
+The result: a searchable collection of over **800 million archived web pages**, freely accessible for research and education.
 
-To nominate a UK website for archiving:
+## Why It Matters
 
-**Email:** web-archivist@bl.uk
+The web is not permanent. In fact, it's surprisingly fragile.
 
-Please include:
-- The website URL (required)
-- Reason for nomination (optional)
-- Any specific pages or content of interest (optional)
-- The date the website will go offline, if appropriate (optional)
-- Your contact information (optional)
+Studies show that a significant percentage of links published in news articles are broken within a year. Government pages get quietly deleted. Social movements lose their online traces. Small businesses close; their websites vanish. Without deliberate archiving, history rewrites itself silently.
 
-## Media and Press
+The UK Web Archive stops that from happening. We hold the record straight.
 
-For media enquiries and press information:
+## Who Is It For?
 
-**Email:** press@bl.uk
+- **Researchers and academics** tracing how narratives, policies, or cultures changed over time
+- **Journalists and fact-checkers** verifying what was actually said, when
+- **Historians** building the digital record of our age
+- **Students** exploring primary sources online
+- **Curious people** who want to see what the internet looked like in 2005
 
-## Partnerships and Collaboration
+In short: anyone who believes the past deserves to be remembered.
 
-Interested in partnering with us or institutional collaboration:
+## Our Partners
 
-**Email:** research.development@bl.uk
+The UK Web Archive is a collaboration between six legal deposit libraries:
 
-## Postal Address
+- The British Library
+- National Library of Scotland
+- National Library of Wales
+- Bodleian Libraries, University of Oxford
+- Cambridge University Library
+- Trinity College Dublin
 
-UK Web Archive
-Lower Ground Floor, Zone 296 Euston Road
-London NW1 2DB
-United Kingdom
+Together, we work to ensure the digital heritage of the United Kingdom survives.
 
-## Social Media
+## Legal Basis
 
-Stay connected with us:
-- LinkedIn: UK Web Archive
+We operate under the **Legal Deposit Libraries Act 2003** and the **Non-Print Legal Deposit Regulations 2013**, which give us the right to collect and preserve UK web content for the benefit of future generations.
 
-## Feedback
+## Get Involved
 
-Your feedback helps us improve our services. Please let us know about your experience using the UK Web Archive, suggestions for improvement, or any issues you've encountered.
-
-## Privacy
-
-We respect your privacy. Any information you provide will be handled in accordance with UK data protection regulations (GDPR). See our Privacy Policy for more details.
-
-## Response Time
-
-We aim to respond to all enquiries within 2-3 working days. Complex research queries may take longer, and we'll keep you informed of progress.
-
-Thank you for your interest in the UK Web Archive!
+Want to help shape what we preserve? [Nominate a website](/save-website) — it takes less than a minute.

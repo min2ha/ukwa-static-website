@@ -4,33 +4,33 @@ import { useLanguage } from '../hooks/useLanguage';
 
 export default function LanguageSwitcher() {
   const currentLang = useLanguage();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate    = useNavigate();
+  const location    = useLocation();
 
-  const switchLanguage = (targetLangCode) => {
-    const targetLang = languages[targetLangCode];
-    const currentPrefix = currentLang.urlPrefix;
+  function switchTo(targetCode) {
+    const target  = languages[targetCode];
+    const current = currentLang;
 
-    // Extract the page path after the language prefix
-    let pagePath = location.pathname;
-    if (currentPrefix && pagePath.startsWith(currentPrefix)) {
-      pagePath = pagePath.slice(currentPrefix.length);
-    }
+    // Determine the slug portion of the current URL
+    const currentPrefix = current.urlPrefix || '';
+    const slugPath = location.pathname.startsWith(currentPrefix)
+      ? location.pathname.slice(currentPrefix.length) || '/'
+      : '/';
 
-    // Build new path with target language prefix
-    const newPath = targetLang.urlPrefix + pagePath || '/';
-    navigate(newPath === '' ? '/' : newPath);
-  };
+    const newPath = (target.urlPrefix || '') + (slugPath === '/' ? '' : slugPath) || '/';
+    navigate(newPath || '/');
+  }
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-1" aria-label="Language selection">
       {languageOrder
-        .filter(code => code !== currentLang.code)
-        .map(code => (
+        .filter((code) => code !== currentLang.code)
+        .map((code) => (
           <button
             key={code}
-            onClick={() => switchLanguage(code)}
+            onClick={() => switchTo(code)}
             className="lang-btn"
+            aria-label={`Switch to ${languages[code].name}`}
           >
             {languages[code].name}
           </button>

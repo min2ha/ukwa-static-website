@@ -1,14 +1,13 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/content/*.md", "/images/*", "*.js", "*.css", "*.svg", "*.ico", "*.png", "*.jpg"]
+    "exclude": ["/images/**", "/content/**", "/*.{css,js,ico,png,svg,woff2}"]
   },
   "routes": [
     {
       "route": "/content/*",
       "headers": {
-        "Cache-Control": "no-cache",
-        "Content-Type": "text/plain; charset=utf-8"
+        "Cache-Control": "no-cache, no-store, must-revalidate"
       }
     },
     {
@@ -18,12 +17,6 @@
       }
     }
   ],
-  "responseOverrides": {
-    "404": {
-      "rewrite": "/index.html",
-      "statusCode": 200
-    }
-  },
   "globalHeaders": {
     "X-Frame-Options": "SAMEORIGIN",
     "X-Content-Type-Options": "nosniff",

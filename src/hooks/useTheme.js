@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-const STORAGE_KEY = 'ukwa-theme';
+const STORAGE_KEY = 'ukwa-goth2-theme';
 
 export function useTheme() {
   const [theme, setTheme] = useState(() => {
     try {
-      return localStorage.getItem(STORAGE_KEY) || 'dark';
+      return localStorage.getItem(STORAGE_KEY) || 'light';
     } catch {
-      return 'dark';
+      return 'light';
     }
   });
 
@@ -25,9 +25,7 @@ export function useTheme() {
     }
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
+  const toggleTheme = () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
 
   return { theme, toggleTheme };
 }

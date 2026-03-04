@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -9,7 +8,7 @@ export default {
     extend: {
       colors: {
         dark: {
-          50: '#f8fafc',
+          50:  '#f8fafc',
           100: '#f1f5f9',
           200: '#e2e8f0',
           300: '#cbd5e1',
@@ -19,16 +18,48 @@ export default {
           700: '#334155',
           800: '#1e293b',
           900: '#0f172a',
-          950: '#020617'
+          950: '#020617',
+        },
+        heritage: {
+          navy:         '#0d1b47',
+          'navy-dark':  '#070f2b',
+          'navy-deep':  '#030a1c',
+          gold:         '#c9a84c',
+          'gold-light': '#e8cc7e',
+          'gold-pale':  '#f5e6b8',
+          'gold-dark':  '#9c7a35',
+          'gold-muted': '#7a5f28',
+          crimson:      '#8b0000',
+          'crimson-light': '#b22222',
+          parchment:    '#f5f0e8',
+          'parchment-dark': '#ede5d0',
+          'parchment-deep': '#e0d4b8',
+          ink:          '#1a1208',
+          stone:        '#8c8075',
+          'stone-light':'#c4bbb0',
         },
         accent: {
-          primary: '#3b82f6',
+          primary:   '#3b82f6',
           secondary: '#8b5cf6',
-          success: '#10b981',
-          warning: '#f59e0b',
-          danger: '#ef4444'
-        }
-      }
+        },
+      },
+      fontFamily: {
+        gothic:        ['"UnifrakturMaguntia"', 'cursive'],
+        heading:       ['"Cinzel Decorative"', '"Cinzel"', 'Georgia', 'serif'],
+        institutional: ['"Cinzel"', 'Georgia', 'serif'],
+        body:          ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        fell:          ['"IM Fell English SC"', '"IM Fell English"', 'Georgia', 'serif'],
+      },
+      letterSpacing: {
+        'heritage': '0.18em',
+        'royal':    '0.30em',
+      },
+      boxShadow: {
+        'gold':       '0 0 0 1px #c9a84c, 0 4px 24px -4px rgba(201,168,76,0.35)',
+        'gold-inner': 'inset 0 1px 0 rgba(201,168,76,0.25)',
+        'parchment':  '0 20px 50px -12px rgba(26,18,8,0.25)',
+        'navy':       '0 20px 50px -12px rgba(7,15,43,0.65)',
+      },
     },
   },
   plugins: [],
