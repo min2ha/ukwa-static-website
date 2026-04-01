@@ -18,12 +18,12 @@ export default function LanguageSwitcher() {
     }
 
     // Build new path with target language prefix
-    const newPath = targetLang.urlPrefix + pagePath || '/';
+    const newPath = `${targetLang.urlPrefix}${pagePath}` || '/';
     navigate(newPath === '' ? '/' : newPath);
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-2">
       {languageOrder
         .filter(code => code !== currentLang.code)
         .map(code => (
@@ -32,7 +32,10 @@ export default function LanguageSwitcher() {
             onClick={() => switchLanguage(code)}
             className="lang-btn"
           >
-            {languages[code].name}
+            <span className="text-[0.68rem] font-bold uppercase tracking-[0.22em]">
+              {code}
+            </span>
+            <span className="hidden sm:inline">{languages[code].name}</span>
           </button>
         ))}
     </div>
