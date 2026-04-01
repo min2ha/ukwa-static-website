@@ -1,65 +1,87 @@
 ---
-title: "Contact Us"
-description: "Get in touch with the UK Web Archive team"
+title: "About Us"
+description: "Learn about the UK Web Archive mission, history, and team"
 ---
 
-# Contact Us
+# About the UK Web Archive
 
-We welcome your questions, suggestions, and feedback. There are several ways to get in touch with the UK Web Archive team.
+The UK Web Archive is a collaborative initiative dedicated to collecting, preserving, and providing long-term access to websites and web content that document the United Kingdom's digital heritage.
 
-## General Enquiries
+## Our History
 
-For general questions about the UK Web Archive, our collections, or how to use our services:
+Founded to address the growing need for digital preservation, the UK Web Archive has been collecting UK web content since its inception. We work to ensure that the UK's digital cultural heritage is preserved for future generations of researchers, historians, students, and the general public.
 
-**Email:** web-archivist@bl.uk
+## Our Mission
 
-## Website Nominations
+Our mission is to:
 
-To nominate a UK website for archiving:
+- **Collect** UK web content comprehensively and systematically
+- **Preserve** digital materials using best practices and standards
+- **Provide Access** to archived content for research and education
+- **Collaborate** with cultural institutions and content creators
+- **Innovate** in digital preservation technologies and methods
 
-**Email:** web-archivist@bl.uk
+## What We Archive
 
-Please include:
-- The website URL (required)
-- Reason for nomination (optional)
-- Any specific pages or content of interest (optional)
-- The date the website will go offline, if appropriate (optional)
-- Your contact information (optional)
+Our collection includes:
 
-## Media and Press
+### Government and Public Sector
+Official government websites, parliamentary records, public service information, and policy documents.
 
-For media enquiries and press information:
+### Cultural Heritage
+Museums, galleries, libraries, heritage sites, and cultural organizations across the UK.
 
-**Email:** press@bl.uk
+### Academic and Research
+University websites, research publications, academic repositories, and educational resources.
 
-## Partnerships and Collaboration
+### Media and News
+News websites, online publications, broadcasting organizations, and digital journalism.
 
-Interested in partnering with us or institutional collaboration:
+### Business and Commerce
+Company websites, industry publications, professional associations, and commercial content.
 
-**Email:** research.development@bl.uk
+### Community and Society
+Charities, voluntary organizations, community groups, and grassroots movements.
 
-## Postal Address
+## Our Partners
 
-UK Web Archive
-Lower Ground Floor, Zone 296 Euston Road
-London NW1 2DB
-United Kingdom
+We collaborate with:
 
-## Social Media
+- The British Library
+- National libraries and archives
+- Universities and research institutions
+- Cultural heritage organizations
+- Technology partners and service providers
 
-Stay connected with us:
-- LinkedIn: UK Web Archive
+## Standards and Best Practices
 
-## Feedback
+We adhere to international standards for digital preservation, including:
 
-Your feedback helps us improve our services. Please let us know about your experience using the UK Web Archive, suggestions for improvement, or any issues you've encountered.
+- OAIS (Open Archival Information System) reference model
+- WARC (Web ARChive) format for web archiving
+- Dublin Core metadata standards
+- ISO standards for long-term digital preservation
 
-## Privacy
+## Governance
 
-We respect your privacy. Any information you provide will be handled in accordance with UK data protection regulations (GDPR). See our Privacy Policy for more details.
+The UK Web Archive operates under the guidance of an advisory board comprising experts in:
 
-## Response Time
+- Digital preservation
+- Cultural heritage
+- Library and information science
+- Web technology
+- Legal and ethical issues
 
-We aim to respond to all enquiries within 2-3 working days. Complex research queries may take longer, and we'll keep you informed of progress.
+## Sustainability
 
-Thank you for your interest in the UK Web Archive!
+We are committed to long-term sustainability through:
+
+- Secure funding partnerships
+- Robust technical infrastructure
+- Regular technology updates
+- Staff training and development
+- Community engagement
+
+## Join Us
+
+Whether you're a researcher, content creator, institution, or interested individual, there are many ways to engage with the UK Web Archive and support our mission to preserve the UK's digital heritage.
