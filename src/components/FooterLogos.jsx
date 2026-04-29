@@ -1,24 +1,16 @@
-export default function FooterLogos({ theme }) {
+export default function FooterLogos() {
   return (
     <section className="bg-white dark:bg-dark-900/50 py-10 mt-16 border-t border-gray-200 dark:border-dark-700">
       <div className="max-w-7xl mx-auto px-6">
-        {theme === 'dark' ? (
-          <div className="bg-white rounded-xl p-6 md:p-8 max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-white dark:bg-white rounded-xl p-4 sm:p-6 shadow-sm">
             <img
-              src="/images/footer/about-logos.png"
-              alt="Partner Logos"
-              className="max-w-full h-auto mx-auto block"
+              src="/images/footer/LDL_Logos.jpg"
+              alt="Library and archive partner logos"
+              className="w-full h-auto block"
             />
           </div>
-        ) : (
-          <div className="max-w-4xl mx-auto">
-            <img
-              src="/images/footer/about-logos.png"
-              alt="Partner Logos"
-              className="max-w-full h-auto mx-auto block"
-            />
-          </div>
-        )}
+        </div>
       </div>
     </section>
   );

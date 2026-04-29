@@ -3,7 +3,7 @@ title: "Home"
 description: "UK Web Archive - Preserving the UK Web for future generations"
 ---
 
-**Welcome to the UK Web Archive**
+# Welcome to the UK Web Archive
 
 The UK Web Archive is available online.
 
@@ -14,41 +14,35 @@ Additional functionality will be introduced over time.
 
 Thank you for your patience as development continues.
 
-**About the UK Web Archive**
+## About the UK Web Archive
 
 The UK Web Archive preserves the digital heritage of the United Kingdom.
 We collect, preserve, and provide access to UK websites to ensure this
 material remains available for research, education, and the public
 record.
 
-**Our Mission**
+## Our Mission
 
 We capture UK web content before it disappears, creating a lasting
-record of the UK’s digital presence, including government, cultural,
+record of the UK's digital presence, including government, cultural,
 business, organisational, and personal websites.
 
-**Why Archive the Web?**
+## Why Archive the Web?
 
 Websites change or are removed over time. Archiving ensures that:
 
 - Historical records are preserved
-
 - Research materials remain accessible
-
 - Cultural heritage is protected
-
 - Government information is retained
-
 - Educational resources are maintained
 
-**Get Involved**
+## Get Involved
 
 You can contribute by:
 
 - Nominating UK websites for archiving
-
 - Using the archive for research and education
-
 - Supporting digital preservation
 
 Explore the archive to discover the history of the UK web.

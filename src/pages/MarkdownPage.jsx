@@ -1,6 +1,7 @@
 import { useMarkdown } from '../hooks/useMarkdown';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import PageInfoStripe from '../components/PageInfoStripe';
+import UrlSearchBox from '../components/UrlSearchBox';
 
 export default function MarkdownPage({ lang, slug, theme }) {
   const { metadata, content, loading, error } = useMarkdown(lang, slug);
@@ -35,7 +36,12 @@ export default function MarkdownPage({ lang, slug, theme }) {
     <>
       <PageInfoStripe title={metadata.title || ''} />
       <main className="max-w-4xl mx-auto px-6 py-10">
-        <MarkdownRenderer content={content} theme={theme} />
+        <MarkdownRenderer
+          content={content}
+          theme={theme}
+          afterParagraph={slug === '' ? 'The UK Web Archive is available online.' : undefined}
+          insertNode={slug === '' ? <UrlSearchBox theme={theme} /> : undefined}
+        />
       </main>
     </>
   );

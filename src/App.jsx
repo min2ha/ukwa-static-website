@@ -37,7 +37,7 @@ function App() {
         </Routes>
       </div>
 
-      <FooterLogos theme={theme} />
+      <FooterLogos />
       <Footer />
     </div>
   );

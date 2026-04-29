@@ -31,18 +31,14 @@ export default function Header({ theme, onToggleTheme }) {
   return (
     <header className="sticky top-0 z-50">
       {/* Banner */}
-      <div className={
-        theme === 'dark'
-          ? 'bg-gradient-to-r from-dark-900 via-dark-800 to-dark-900 border-b border-dark-700'
-          : 'bg-white border-b-4 border-blue-800'
-      }>
+      <div className="bg-gradient-to-r from-dark-900 via-dark-800 to-dark-900 border-b border-dark-700">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between gap-4">
             {/* Logo */}
             <div className="flex-shrink-0">
               <NavLink to={lang.urlPrefix || '/'}>
                 <img
-                  src={theme === 'dark' ? '/images/logo/ukwa-2018-dark.svg' : '/images/logo/ukwa-2018-onwhite-close.svg'}
+                  src="/images/logo/ukwa-2018-dark.svg"
                   alt="UK Web Archive"
                   className="h-14 md:h-16 w-auto"
                 />
@@ -57,7 +53,11 @@ export default function Header({ theme, onToggleTheme }) {
                   to={item.path}
                   end={item.slug === ''}
                   className={({ isActive }) =>
-                    `nav-link ${isActive ? 'active' : ''}`
+                    `px-4 py-2 rounded-lg transition-colors font-medium text-sm ${
+                      isActive
+                        ? 'text-accent-primary bg-dark-800/50'
+                        : 'text-dark-300 hover:bg-dark-800 hover:text-dark-100'
+                    }`
                   }
                 >
                   {item.name}
@@ -75,7 +75,7 @@ export default function Header({ theme, onToggleTheme }) {
             <div className="md:hidden flex items-center gap-2">
               <ThemeToggle theme={theme} onToggle={onToggleTheme} />
               <button
-                className="p-2 text-gray-600 hover:text-gray-800 dark:text-dark-300 dark:hover:text-dark-100 transition-colors"
+                className="p-2 text-dark-300 hover:text-dark-100 transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               >
