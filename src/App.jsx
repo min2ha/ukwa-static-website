@@ -2,6 +2,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FooterLogos from './components/FooterLogos';
+import FooterMenu from './components/FooterMenu';
+import ScrollToTop from './components/ScrollToTop';
 import MarkdownPage from './pages/MarkdownPage';
 import InformationIndexPage from './pages/InformationIndexPage';
 import CollectionsPage from './pages/CollectionsPage';
@@ -23,6 +25,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-dark-950">
+      <ScrollToTop />
       <Header theme={theme} onToggleTheme={toggleTheme} />
 
       <div className="flex-1">
@@ -79,6 +82,7 @@ function App() {
         </Routes>
       </div>
 
+      <FooterMenu />
       <FooterLogos />
       <Footer />
     </div>
