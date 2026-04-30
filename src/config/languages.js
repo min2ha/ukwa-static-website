@@ -8,6 +8,7 @@ export const languages = {
     homeLabel: 'Home',
     menu: [
       { name: 'Home', path: '/', slug: '' },
+      { name: 'Collections and Themes', path: '/themes/collections', slug: 'themes' },
       { name: 'Save a UK Website', path: '/save-website', slug: 'save-website' },
       { name: 'About Us', path: '/about', slug: 'about' },
       { name: 'Contact Us', path: '/contact', slug: 'contact' },
@@ -35,6 +36,7 @@ export const languages = {
     homeLabel: 'Hafan',
     menu: [
       { name: 'Hafan', path: '/cy', slug: '' },
+      { name: 'Them\u00e2u', path: '/cy/themes', slug: 'themes' },
       { name: 'Cadw Gwefan y DU', path: '/cy/save-website', slug: 'save-website' },
       { name: 'Amdanom Ni', path: '/cy/about', slug: 'about' },
       { name: 'Cysylltwch \u00e2 Ni', path: '/cy/contact', slug: 'contact' },
@@ -62,6 +64,7 @@ export const languages = {
     homeLabel: 'Dachaigh',
     menu: [
       { name: 'Dachaigh', path: '/gd', slug: '' },
+      { name: 'Cuspairean', path: '/gd/themes', slug: 'themes' },
       { name: 'S\u00e0bhail L\u00e0rach-l\u00ecn na RA', path: '/gd/save-website', slug: 'save-website' },
       { name: 'Mu ar Deidhinn', path: '/gd/about', slug: 'about' },
       { name: 'Cuir Fios Thugainn', path: '/gd/contact', slug: 'contact' },

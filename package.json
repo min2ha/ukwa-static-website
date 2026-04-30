@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "build:collections": "node scripts/build-collections-index.mjs",
+    "predev": "npm run build:collections",
+    "prebuild": "npm run build:collections",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",

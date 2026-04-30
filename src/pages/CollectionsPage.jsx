@@ -1,0 +1,650 @@
+import { useState, useEffect, useCallback } from 'react';
+import PageInfoStripe from '../components/PageInfoStripe';
+import { useCollectionData } from '../hooks/useCollectionData';
+
+const ITEMS_PER_PAGE = 9;
+
+// ─── Badge colour maps ────────────────────────────────────────────────────────
+
+const DEPTH_COLOURS = {
+  DEEP: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
+  CAPPED_LARGE: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
+  CAPPED: 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300',
+};
+
+const FREQ_COLOURS = {
+  DAILY: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
+  WEEKLY: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
+  MONTHLY: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
+  QUARTERLY: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+  SIXMONTHLY: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
+  ANNUAL: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300',
+};
+
+const LICENCE_COLOURS = {
+  GRANTED: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
+  PENDING: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300',
+  NOT_INITIATED: 'bg-gray-100 text-gray-600 dark:bg-dark-700 dark:text-dark-400',
+  QUEUED: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+  NONE: 'bg-gray-100 text-gray-500 dark:bg-dark-700 dark:text-dark-500',
+};
+
+const SCOPE_COLOURS = {
+  root: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300',
+  subdomains: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+};
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function Badge({ label, colourClass }) {
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${colourClass}`}>
+      {label}
+    </span>
+  );
+}
+
+function getDomain(url) {
+  try { return new URL(url).hostname.replace('www.', ''); }
+  catch { return url; }
+}
+
+function formatFreq(f) {
+  const map = { DAILY: 'Daily', WEEKLY: 'Weekly', MONTHLY: 'Monthly', QUARTERLY: 'Quarterly', SIXMONTHLY: '6-Monthly', ANNUAL: 'Annual' };
+  return map[f] ?? f;
+}
+
+function formatYear(dateStr) {
+  return dateStr ? dateStr.slice(0, 4) : null;
+}
+
+function truncate(str, n) {
+  if (!str || str.length <= n) return str;
+  return str.slice(0, n).trimEnd() + '…';
+}
+
+function licenceBadgesFromSummary(summary) {
+  if (!summary) return [];
+  return Object.entries(summary)
+    .filter(([, count]) => count > 0)
+    .map(([status, count]) => ({
+      key: status,
+      label: `${status.replace(/_/g, ' ')} (${count.toLocaleString()})`,
+      colourClass: LICENCE_COLOURS[status] ?? 'bg-gray-100 text-gray-600',
+    }));
+}
+
+// ─── Loading ──────────────────────────────────────────────────────────────────
+
+function Spinner({ message = 'Loading…' }) {
+  return (
+    <div className="flex flex-col items-center gap-3 py-20">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent-primary" />
+      <p className="text-gray-500 dark:text-dark-400 text-sm">{message}</p>
+    </div>
+  );
+}
+
+// ─── Pagination ───────────────────────────────────────────────────────────────
+
+function buildPageWindows(page, totalPages) {
+  const show = new Set([1, totalPages, page, page - 1, page - 2, page + 1, page + 2]);
+  const sorted = [...show].filter(p => p >= 1 && p <= totalPages).sort((a, b) => a - b);
+  const result = [];
+  for (let i = 0; i < sorted.length; i++) {
+    if (i > 0 && sorted[i] - sorted[i - 1] > 1) result.push('…');
+    result.push(sorted[i]);
+  }
+  return result;
+}
+
+function Pagination({ page, totalPages, onPage }) {
+  if (totalPages <= 1) return null;
+  const navBtn = 'p-2 rounded-lg text-gray-500 dark:text-dark-400 hover:bg-gray-100 dark:hover:bg-dark-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors';
+  const pageBtn = (active) =>
+    `w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
+      active ? 'bg-accent-primary text-white shadow-sm'
+             : 'text-gray-600 dark:text-dark-300 hover:bg-gray-100 dark:hover:bg-dark-700'
+    }`;
+  const windows = buildPageWindows(page, totalPages);
+
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-1 mt-8">
+      <button onClick={() => onPage(page - 1)} disabled={page === 1} className={navBtn} aria-label="Previous page">
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      {windows.map((w, i) =>
+        w === '…' ? (
+          <span key={`d-${i}`} className="w-9 h-9 flex items-center justify-center text-gray-400 dark:text-dark-500 text-sm select-none">…</span>
+        ) : (
+          <button key={w} onClick={() => onPage(w)} className={pageBtn(w === page)}>{w}</button>
+        )
+      )}
+      <button onClick={() => onPage(page + 1)} disabled={page === totalPages} className={navBtn} aria-label="Next page">
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <span className="ml-2 text-sm text-gray-400 dark:text-dark-500">Page {page} of {totalPages}</span>
+    </div>
+  );
+}
+
+// ─── Cards ────────────────────────────────────────────────────────────────────
+
+// ─── Cover image helpers ──────────────────────────────────────────────────────
+
+const FALLBACK_COVER = '/images/TopicsThemes/collections/collection_default.png';
+
+function CoverImage({ src, alt, className = '' }) {
+  return (
+    <img
+      src={src ?? FALLBACK_COVER}
+      alt={alt}
+      loading="lazy"
+      onError={e => { e.currentTarget.src = FALLBACK_COVER; }}
+      className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${className}`}
+    />
+  );
+}
+
+function StatPill({ value, label, accent = 'default' }) {
+  const accents = {
+    default: 'text-gray-900 dark:text-dark-100',
+    success: 'text-emerald-600 dark:text-emerald-400',
+    info: 'text-blue-600 dark:text-blue-400',
+  };
+  return (
+    <div>
+      <div className={`text-xl font-bold tracking-tight ${accents[accent]}`}>{value}</div>
+      <div className="text-[10px] uppercase tracking-[0.08em] text-gray-400 dark:text-dark-500 font-semibold mt-0.5">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function LicenceBar({ licence, total }) {
+  if (!licence || !total) return null;
+  const order = ['GRANTED', 'PENDING', 'QUEUED', 'NOT_INITIATED', 'NONE'];
+  const colours = {
+    GRANTED: 'bg-emerald-500',
+    PENDING: 'bg-amber-400',
+    QUEUED: 'bg-blue-400',
+    NOT_INITIATED: 'bg-gray-300 dark:bg-dark-600',
+    NONE: 'bg-gray-200 dark:bg-dark-700',
+  };
+  const segs = order
+    .map(k => ({ k, n: licence[k] ?? 0 }))
+    .filter(s => s.n > 0);
+  if (segs.length === 0) return null;
+  return (
+    <div className="flex h-1.5 w-full rounded-full overflow-hidden bg-gray-100 dark:bg-dark-700">
+      {segs.map(s => (
+        <div
+          key={s.k}
+          className={colours[s.k]}
+          style={{ width: `${(s.n / total) * 100}%` }}
+          title={`${s.k.replace(/_/g, ' ')}: ${s.n.toLocaleString()}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ─── Dataset card (top-level theme) ───────────────────────────────────────────
+
+function DatasetCard({ dataset, onClick }) {
+  const root = dataset.collections[dataset.collectionId];
+  const yearMin = formatYear(root?.crawlStartMin);
+  const yearMax = formatYear(root?.crawlStartMax);
+  const subCount = root?.children?.length ?? 0;
+  const cover = root?.coverImage ?? FALLBACK_COVER;
+  const coverage = yearMin && yearMax ? (yearMin === yearMax ? yearMin : `${yearMin}–${yearMax}`) : '—';
+
+  return (
+    <button
+      onClick={onClick}
+      className="group relative text-left w-full flex flex-col bg-white dark:bg-dark-800 rounded-2xl border border-gray-200/70 dark:border-dark-700 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2"
+    >
+      {/* Cover */}
+      <div className="relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-dark-900">
+        <CoverImage src={cover} alt={dataset.collectionName} />
+
+        {/* Legibility gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10" />
+
+        {/* Top chips */}
+        <div className="absolute top-4 left-4 right-4 flex items-start justify-between gap-2">
+          <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-full pl-2 pr-3 py-1 text-[11px] text-white font-semibold border border-white/20 uppercase tracking-wider">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+            Theme
+          </div>
+          <span className="inline-flex items-center bg-black/45 backdrop-blur-md rounded-md px-2 py-1 text-[11px] text-white/95 font-mono tabular-nums">
+            #{dataset.collectionId}
+          </span>
+        </div>
+
+        {/* Title overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          <h2 className="text-white text-xl md:text-2xl font-bold leading-tight tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+            {dataset.collectionName}
+          </h2>
+          <p className="text-white/85 text-xs mt-1.5 font-medium">
+            {subCount > 0
+              ? `${subCount} sub-collection${subCount !== 1 ? 's' : ''} · ${coverage}`
+              : `${coverage}`}
+          </p>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="flex flex-col flex-1 p-5 gap-4">
+        <div className="grid grid-cols-2 gap-3">
+          <StatPill value={dataset.itemCount.toLocaleString()} label="Targets" />
+          <StatPill value={coverage} label="Coverage" accent="info" />
+        </div>
+
+        <div className="mt-auto flex items-center justify-between pt-3 border-t border-gray-100 dark:border-dark-700">
+          <span className="text-sm text-gray-500 dark:text-dark-400">
+            {subCount > 0 ? 'Browse sub-collections' : 'Browse archived targets'}
+          </span>
+          <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent-primary group-hover:gap-2 transition-all">
+            Open
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+// ─── Sub-collection card ──────────────────────────────────────────────────────
+
+function CollectionCard({ collection, onClick }) {
+  const yearMin = formatYear(collection.crawlStartMin);
+  const yearMax = formatYear(collection.crawlStartMax);
+  const hasChildren = collection.children?.length > 0;
+  const total = collection.subtreeItemCount;
+  const cover = collection.coverImage ?? FALLBACK_COVER;
+  const coverage = yearMin && yearMax ? (yearMin === yearMax ? yearMin : `${yearMin}–${yearMax}`) : '—';
+
+  return (
+    <button
+      onClick={onClick}
+      className="group relative text-left w-full flex flex-col bg-white dark:bg-dark-800 rounded-2xl border border-gray-200/70 dark:border-dark-700 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2"
+    >
+      {/* Cover */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-900">
+        <CoverImage src={cover} alt={collection.name} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5" />
+
+        {/* Top chips */}
+        <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
+          <div className="inline-flex items-center gap-1 bg-white/15 backdrop-blur-md rounded-full px-2 py-0.5 text-[10px] text-white font-semibold border border-white/20 uppercase tracking-wider">
+            {hasChildren ? `${collection.children.length} sub` : 'Leaf'}
+          </div>
+          <span className="inline-flex items-center bg-black/45 backdrop-blur-md rounded-md px-1.5 py-0.5 text-[10px] text-white/95 font-mono tabular-nums">
+            #{collection.id}
+          </span>
+        </div>
+
+        {/* Title overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <h3 className="text-white text-base font-bold leading-snug tracking-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] line-clamp-2">
+            {collection.name}
+          </h3>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="flex flex-col flex-1 p-4 gap-3">
+        <div className="grid grid-cols-2 gap-2">
+          <StatPill value={total.toLocaleString()} label="Targets" />
+          <StatPill value={coverage} label="Years" accent="info" />
+        </div>
+
+        <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-100 dark:border-dark-700">
+          <span className="text-xs text-gray-500 dark:text-dark-400">
+            {hasChildren
+              ? `${collection.children.length} sub-collection${collection.children.length !== 1 ? 's' : ''}`
+              : `${collection.directItemCount} target${collection.directItemCount !== 1 ? 's' : ''}`}
+          </span>
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-accent-primary group-hover:gap-2 transition-all">
+            {hasChildren ? 'Drill in' : 'View'}
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function ItemCard({ item }) {
+  const domain = getDomain(item['Primary Seed']);
+  const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+  const year = formatYear(item['Crawl Start Date']);
+
+  return (
+    <div className="group flex flex-col bg-white dark:bg-dark-800 rounded-2xl border border-gray-200 dark:border-dark-700 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
+      <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-blue-400 to-accent-secondary" />
+      <div className="flex flex-col flex-1 p-5 gap-3">
+        <div className="flex items-start gap-3">
+          <img
+            src={faviconUrl} alt="" width={24} height={24}
+            className="mt-0.5 rounded flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity"
+            onError={e => { e.currentTarget.style.display = 'none'; }}
+          />
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-100 leading-snug">
+            {item['Title of Target']}
+          </h3>
+        </div>
+        <p className="text-xs text-gray-500 dark:text-dark-400 leading-relaxed flex-1">
+          {truncate(item['Description'], 130)}
+        </p>
+        <div className="text-xs text-accent-primary font-mono truncate" title={item['Primary Seed']}>
+          {domain}
+        </div>
+        <div className="flex flex-wrap gap-1.5 mt-auto pt-2 border-t border-gray-100 dark:border-dark-700">
+          {item['Depth'] && <Badge label={item['Depth'].replace(/_/g, ' ')} colourClass={DEPTH_COLOURS[item['Depth']] ?? 'bg-gray-100 text-gray-600'} />}
+          {item['Crawl Frequency'] && <Badge label={formatFreq(item['Crawl Frequency'])} colourClass={FREQ_COLOURS[item['Crawl Frequency']] ?? 'bg-gray-100 text-gray-600'} />}
+          {item['Scope'] && <Badge label={item['Scope']} colourClass={SCOPE_COLOURS[item['Scope']] ?? 'bg-gray-100 text-gray-600'} />}
+          {item['Licence Status'] && <Badge label={item['Licence Status'].replace(/_/g, ' ')} colourClass={LICENCE_COLOURS[item['Licence Status']] ?? 'bg-gray-100 text-gray-600'} />}
+          {year && <Badge label={`Since ${year}`} colourClass="bg-gray-100 text-gray-500 dark:bg-dark-700 dark:text-dark-400" />}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SearchBar({ value, onChange, count, term }) {
+  return (
+    <div className="max-w-md">
+      <div className="relative">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text" placeholder="Search targets…" value={value}
+          onChange={e => onChange(e.target.value)}
+          className="w-full pl-9 pr-9 py-2.5 rounded-xl border border-gray-200 dark:border-dark-600 bg-white dark:bg-dark-800 text-gray-800 dark:text-dark-100 placeholder-gray-400 dark:placeholder-dark-500 text-sm focus:outline-none focus:ring-2 focus:ring-accent-primary"
+        />
+        {value && (
+          <button onClick={() => onChange('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-dark-200">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
+      {term && (
+        <p className="text-sm text-gray-500 dark:text-dark-400 mt-2">
+          {count} result{count !== 1 ? 's' : ''} for &ldquo;{term}&rdquo;
+        </p>
+      )}
+    </div>
+  );
+}
+
+function BackButton({ label, onClick }) {
+  return (
+    <button onClick={onClick}
+      className="inline-flex items-center gap-1.5 text-sm text-accent-primary hover:text-blue-700 dark:hover:text-blue-300 font-medium mb-4 transition-colors">
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to {label}
+    </button>
+  );
+}
+
+// ─── Main page ────────────────────────────────────────────────────────────────
+
+export default function CollectionsPage() {
+  const {
+    manifest, loadingManifest, error,
+    loadCollectionItems, isItemsLoading,
+    getCollection, getChildren, getAncestors,
+  } = useCollectionData();
+
+  // Navigation: stack of collection IDs from root → current.
+  const [path, setPath] = useState([]);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [items, setItems] = useState(null);
+
+  const currentId = path[path.length - 1] ?? null;
+  const current = currentId != null ? getCollection(currentId) : null;
+  const children = currentId != null ? getChildren(currentId) : [];
+  const isLeaf = current ? children.length === 0 : false;
+  const itemsLoading = currentId != null && isItemsLoading(currentId);
+
+  // Fetch items only when we land on a leaf
+  useEffect(() => {
+    if (currentId != null && isLeaf) {
+      let cancelled = false;
+      setItems(null);
+      loadCollectionItems(currentId).then(data => { if (!cancelled) setItems(data ?? []); });
+      return () => { cancelled = true; };
+    }
+    setItems(null);
+  }, [currentId, isLeaf, loadCollectionItems]);
+
+  const navigateTo = useCallback((id) => {
+    setPath(prev => [...prev, id]);
+    setPage(1);
+    setSearch('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const navigateBack = useCallback(() => {
+    setPath(prev => prev.slice(0, -1));
+    setPage(1);
+    setSearch('');
+  }, []);
+
+  const navigateToIndex = useCallback((idx) => {
+    setPath(prev => prev.slice(0, idx + 1));
+    setPage(1);
+    setSearch('');
+  }, []);
+
+  const handlePageChange = useCallback((p) => {
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // ── Breadcrumbs ──────────────────────────────────────────────────────────
+  const breadcrumbs = (() => {
+    const base = [
+      { label: 'Home', path: '/' },
+      { label: 'Themes', path: '/themes' },
+      { label: 'Collections', path: path.length > 0 ? '/themes/collections' : undefined, onClick: path.length > 0 ? () => setPath([]) : undefined },
+    ];
+    path.forEach((id, i) => {
+      const c = getCollection(id);
+      const isLast = i === path.length - 1;
+      base.push({
+        label: c?.name ?? `#${id}`,
+        path: isLast ? undefined : '#',
+        onClick: isLast ? undefined : () => navigateToIndex(i),
+      });
+    });
+    return base;
+  })();
+
+  // ── Error / loading ──────────────────────────────────────────────────────
+  if (error) {
+    return (
+      <>
+        <PageInfoStripe breadcrumbs={breadcrumbs} />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-8 text-center max-w-md">
+            <div className="text-red-500 text-5xl mb-4">!</div>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-dark-100 mb-2">Failed to load data</h2>
+            <p className="text-gray-500 dark:text-dark-400 font-mono text-sm">{error}</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (loadingManifest || !manifest) {
+    return (
+      <>
+        <PageInfoStripe breadcrumbs={breadcrumbs} />
+        <Spinner message="Loading collections…" />
+      </>
+    );
+  }
+
+  // ── Level 0: theme/dataset index ─────────────────────────────────────────
+  if (path.length === 0) {
+    return (
+      <>
+        <PageInfoStripe breadcrumbs={breadcrumbs} />
+        <main className="max-w-7xl mx-auto px-6 py-10">
+          <div className="mb-8">
+            <div className="flex items-center gap-2 text-xs font-semibold text-accent-primary uppercase tracking-widest mb-2">
+              <span className="w-8 h-px bg-accent-primary inline-block" />
+              UK Web Archive
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-dark-100 leading-tight">
+              Archived Collections
+            </h1>
+            <p className="text-gray-500 dark:text-dark-400 mt-2 max-w-xl">
+              Browse {manifest.summary.datasetCount} curated themes covering {manifest.summary.totalItems.toLocaleString()} archived targets.
+              Drill in to see sub-collections and individual targets.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-4 mb-8">
+            {[
+              { label: 'Themes', value: manifest.summary.datasetCount },
+              { label: 'Collections', value: manifest.summary.totalCollections.toLocaleString() },
+              { label: 'Archived Targets', value: manifest.summary.totalItems.toLocaleString() },
+            ].map(s => (
+              <div key={s.label} className="bg-gray-50 dark:bg-dark-800 rounded-xl px-5 py-3 flex items-center gap-3 border border-gray-200 dark:border-dark-700">
+                <span className="text-2xl font-bold text-gray-800 dark:text-dark-100">{s.value}</span>
+                <span className="text-sm text-gray-500 dark:text-dark-400">{s.label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {manifest.datasets.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE).map(ds => (
+              <DatasetCard key={ds.collectionId} dataset={ds} onClick={() => navigateTo(ds.collectionId)} />
+            ))}
+          </div>
+          <Pagination
+            page={page}
+            totalPages={Math.ceil(manifest.datasets.length / ITEMS_PER_PAGE)}
+            onPage={handlePageChange}
+          />
+        </main>
+      </>
+    );
+  }
+
+  // ── Levels 1+: a collection (leaf or branch) ─────────────────────────────
+  if (!current) {
+    return (
+      <>
+        <PageInfoStripe breadcrumbs={breadcrumbs} />
+        <div className="text-center py-20 text-gray-400 dark:text-dark-500">Collection not found.</div>
+      </>
+    );
+  }
+
+  const ancestors = getAncestors(currentId);
+  const parent = ancestors[ancestors.length - 1] ?? null;
+  const backLabel = path.length === 1 ? 'all themes' : (parent?.name ?? 'previous');
+
+  // Branch view: render child collection cards
+  if (!isLeaf) {
+    const totalPages = Math.ceil(children.length / ITEMS_PER_PAGE);
+    const paginated = children.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+    return (
+      <>
+        <PageInfoStripe breadcrumbs={breadcrumbs} />
+        <main className="max-w-7xl mx-auto px-6 py-10">
+          <BackButton label={backLabel} onClick={navigateBack} />
+
+          <div className="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-dark-800 rounded-2xl p-6 text-white mb-8">
+            <div className="text-blue-200 text-sm font-medium mb-1">Collection #{current.id}</div>
+            <h1 className="text-2xl md:text-3xl font-bold leading-snug mb-2">{current.name}</h1>
+            <p className="text-blue-200 text-sm">
+              {children.length} sub-collection{children.length !== 1 ? 's' : ''} ·
+              {' '}{current.subtreeItemCount.toLocaleString()} archived targets
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {paginated.map(c => <CollectionCard key={c.id} collection={c} onClick={() => navigateTo(c.id)} />)}
+          </div>
+          <Pagination page={page} totalPages={totalPages} onPage={handlePageChange} />
+        </main>
+      </>
+    );
+  }
+
+  // Leaf view: items within this collection
+  const filtered = (items ?? []).filter(i => {
+    if (!search.trim()) return true;
+    const s = search.toLowerCase();
+    return (
+      i['Title of Target']?.toLowerCase().includes(s) ||
+      i['Description']?.toLowerCase().includes(s) ||
+      getDomain(i['Primary Seed']).toLowerCase().includes(s)
+    );
+  });
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+  return (
+    <>
+      <PageInfoStripe breadcrumbs={breadcrumbs} />
+      <main className="max-w-7xl mx-auto px-6 py-10">
+        <BackButton label={backLabel} onClick={navigateBack} />
+
+        <div className="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-dark-800 rounded-2xl p-6 text-white mb-6">
+          <div className="text-blue-200 text-sm font-medium mb-1">
+            Collection #{current.id}
+            {parent && <> · part of {parent.name}</>}
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold leading-snug mb-2">{current.name}</h1>
+          <p className="text-blue-200 text-sm">
+            {current.directItemCount.toLocaleString()} archived target{current.directItemCount !== 1 ? 's' : ''}
+          </p>
+        </div>
+
+        <SearchBar value={search} onChange={s => { setSearch(s); setPage(1); }} count={filtered.length} term={search} />
+
+        {itemsLoading || items === null ? (
+          <Spinner message="Loading targets…" />
+        ) : paginated.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
+            {paginated.map(item => <ItemCard key={item['Record ID']} item={item} />)}
+          </div>
+        ) : (
+          <div className="text-center py-20 text-gray-400 dark:text-dark-500">
+            <svg className="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {search.trim() ? 'No targets match your search.' : 'No targets in this collection.'}
+          </div>
+        )}
+
+        <Pagination page={page} totalPages={totalPages} onPage={handlePageChange} />
+      </main>
+    </>
+  );
+}

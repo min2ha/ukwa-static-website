@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import FooterLogos from './components/FooterLogos';
 import MarkdownPage from './pages/MarkdownPage';
 import InformationIndexPage from './pages/InformationIndexPage';
+import CollectionsPage from './pages/CollectionsPage';
 import { useTheme } from './hooks/useTheme';
 import { languages } from './config/languages';
 
@@ -28,6 +29,8 @@ function App() {
         <Routes>
           {/* English routes */}
           <Route path="/" element={<MarkdownPage lang="en" slug="" theme={theme} />} />
+          <Route path="/themes" element={<MarkdownPage lang="en" slug="themes" theme={theme} />} />
+          <Route path="/themes/collections" element={<CollectionsPage />} />
           <Route path="/save-website" element={<MarkdownPage lang="en" slug="save-website" theme={theme} />} />
           <Route path="/contact" element={<MarkdownPage lang="en" slug="contact" theme={theme} />} />
 
@@ -45,6 +48,7 @@ function App() {
 
           {/* Welsh routes */}
           <Route path="/cy" element={<MarkdownPage lang="cy" slug="" theme={theme} />} />
+          <Route path="/cy/themes" element={<MarkdownPage lang="cy" slug="themes" theme={theme} />} />
           <Route path="/cy/save-website" element={<MarkdownPage lang="cy" slug="save-website" theme={theme} />} />
           <Route path="/cy/contact" element={<MarkdownPage lang="cy" slug="contact" theme={theme} />} />
           <Route path="/cy/about" element={<MarkdownPage lang="cy" slug="about" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
@@ -58,6 +62,7 @@ function App() {
 
           {/* Gaelic routes */}
           <Route path="/gd" element={<MarkdownPage lang="gd" slug="" theme={theme} />} />
+          <Route path="/gd/themes" element={<MarkdownPage lang="gd" slug="themes" theme={theme} />} />
           <Route path="/gd/save-website" element={<MarkdownPage lang="gd" slug="save-website" theme={theme} />} />
           <Route path="/gd/contact" element={<MarkdownPage lang="gd" slug="contact" theme={theme} />} />
           <Route path="/gd/about" element={<MarkdownPage lang="gd" slug="about" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
