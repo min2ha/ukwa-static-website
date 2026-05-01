@@ -220,7 +220,7 @@ function DatasetCard({ dataset, onClick }) {
         <div className="absolute top-4 left-4 right-4 flex items-start justify-between gap-2">
           <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-full pl-2 pr-3 py-1 text-[11px] text-white font-semibold border border-white/20 uppercase tracking-wider">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-            Theme
+            Collection
           </div>
           <span className="inline-flex items-center bg-black/45 backdrop-blur-md rounded-md px-2 py-1 text-[11px] text-white/95 font-mono tabular-nums">
             #{dataset.collectionId}
@@ -232,21 +232,16 @@ function DatasetCard({ dataset, onClick }) {
           <h2 className="text-white text-xl md:text-2xl font-bold leading-tight tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
             {dataset.collectionName}
           </h2>
-          <p className="text-white/85 text-xs mt-1.5 font-medium">
-            {subCount > 0
-              ? `${subCount} sub-collection${subCount !== 1 ? 's' : ''} · ${coverage}`
-              : `${coverage}`}
-          </p>
+          {subCount > 0 && (
+            <p className="text-white/85 text-xs mt-1.5 font-medium">
+              {`${subCount} sub-collection${subCount !== 1 ? 's' : ''}`}
+            </p>
+          )}
         </div>
       </div>
 
       {/* Body */}
       <div className="flex flex-col flex-1 p-5 gap-4">
-        <div className="grid grid-cols-2 gap-3">
-          <StatPill value={dataset.itemCount.toLocaleString()} label="Targets" />
-          <StatPill value={coverage} label="Coverage" accent="info" />
-        </div>
-
         <div className="mt-auto flex items-center justify-between pt-3 border-t border-gray-100 dark:border-dark-700">
           <span className="text-sm text-gray-500 dark:text-dark-400">
             {subCount > 0 ? 'Browse sub-collections' : 'Browse archived targets'}
@@ -286,7 +281,7 @@ function CollectionCard({ collection, onClick }) {
         {/* Top chips */}
         <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
           <div className="inline-flex items-center gap-1 bg-white/15 backdrop-blur-md rounded-full px-2 py-0.5 text-[10px] text-white font-semibold border border-white/20 uppercase tracking-wider">
-            {hasChildren ? `${collection.children.length} sub` : 'Leaf'}
+            {hasChildren ? `${collection.children.length} sub` : 'Subcollection'}
           </div>
           <span className="inline-flex items-center bg-black/45 backdrop-blur-md rounded-md px-1.5 py-0.5 text-[10px] text-white/95 font-mono tabular-nums">
             #{collection.id}
@@ -303,16 +298,9 @@ function CollectionCard({ collection, onClick }) {
 
       {/* Body */}
       <div className="flex flex-col flex-1 p-4 gap-3">
-        <div className="grid grid-cols-2 gap-2">
-          <StatPill value={total.toLocaleString()} label="Targets" />
-          <StatPill value={coverage} label="Years" accent="info" />
-        </div>
-
         <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-100 dark:border-dark-700">
           <span className="text-xs text-gray-500 dark:text-dark-400">
-            {hasChildren
-              ? `${collection.children.length} sub-collection${collection.children.length !== 1 ? 's' : ''}`
-              : `${collection.directItemCount} target${collection.directItemCount !== 1 ? 's' : ''}`}
+            {hasChildren ? `${collection.children.length} sub-collection${collection.children.length !== 1 ? 's' : ''}` : ''}
           </span>
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-accent-primary group-hover:gap-2 transition-all">
             {hasChildren ? 'Drill in' : 'View'}
@@ -354,8 +342,8 @@ function ItemCard({ item }) {
         <div className="flex flex-wrap gap-1.5 mt-auto pt-2 border-t border-gray-100 dark:border-dark-700">
           {item['Depth'] && <Badge label={item['Depth'].replace(/_/g, ' ')} colourClass={DEPTH_COLOURS[item['Depth']] ?? 'bg-gray-100 text-gray-600'} />}
           {item['Crawl Frequency'] && <Badge label={formatFreq(item['Crawl Frequency'])} colourClass={FREQ_COLOURS[item['Crawl Frequency']] ?? 'bg-gray-100 text-gray-600'} />}
-          {item['Scope'] && <Badge label={item['Scope']} colourClass={SCOPE_COLOURS[item['Scope']] ?? 'bg-gray-100 text-gray-600'} />}
-          {item['Licence Status'] && <Badge label={item['Licence Status'].replace(/_/g, ' ')} colourClass={LICENCE_COLOURS[item['Licence Status']] ?? 'bg-gray-100 text-gray-600'} />}
+          {item['Scope'] && item['Scope'] !== 'root' && <Badge label={item['Scope']} colourClass={SCOPE_COLOURS[item['Scope']] ?? 'bg-gray-100 text-gray-600'} />}
+          {item['Licence Status'] && item['Licence Status'] !== 'NOT_INITIATED' && item['Licence Status'] !== 'PENDING' && <Badge label={item['Licence Status'].replace(/_/g, ' ')} colourClass={LICENCE_COLOURS[item['Licence Status']] ?? 'bg-gray-100 text-gray-600'} />}
           {year && <Badge label={`Since ${year}`} colourClass="bg-gray-100 text-gray-500 dark:bg-dark-700 dark:text-dark-400" />}
         </div>
       </div>
@@ -466,7 +454,7 @@ export default function CollectionsPage() {
     const base = [
       { label: 'Home', path: '/' },
       { label: 'Themes', path: '/themes' },
-      { label: 'Collections', path: path.length > 0 ? '/themes/collections' : undefined, onClick: path.length > 0 ? () => setPath([]) : undefined },
+      { label: 'Collections', onClick: path.length > 0 ? () => setPath([]) : undefined },
     ];
     path.forEach((id, i) => {
       const c = getCollection(id);
@@ -517,25 +505,8 @@ export default function CollectionsPage() {
               UK Web Archive
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-dark-100 leading-tight">
-              Archived Collections
+              Top Collections
             </h1>
-            <p className="text-gray-500 dark:text-dark-400 mt-2 max-w-xl">
-              Browse {manifest.summary.datasetCount} curated themes covering {manifest.summary.totalItems.toLocaleString()} archived targets.
-              Drill in to see sub-collections and individual targets.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-4 mb-8">
-            {[
-              { label: 'Themes', value: manifest.summary.datasetCount },
-              { label: 'Collections', value: manifest.summary.totalCollections.toLocaleString() },
-              { label: 'Archived Targets', value: manifest.summary.totalItems.toLocaleString() },
-            ].map(s => (
-              <div key={s.label} className="bg-gray-50 dark:bg-dark-800 rounded-xl px-5 py-3 flex items-center gap-3 border border-gray-200 dark:border-dark-700">
-                <span className="text-2xl font-bold text-gray-800 dark:text-dark-100">{s.value}</span>
-                <span className="text-sm text-gray-500 dark:text-dark-400">{s.label}</span>
-              </div>
-            ))}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -582,8 +553,7 @@ export default function CollectionsPage() {
             <div className="text-blue-200 text-sm font-medium mb-1">Collection #{current.id}</div>
             <h1 className="text-2xl md:text-3xl font-bold leading-snug mb-2">{current.name}</h1>
             <p className="text-blue-200 text-sm">
-              {children.length} sub-collection{children.length !== 1 ? 's' : ''} ·
-              {' '}{current.subtreeItemCount.toLocaleString()} archived targets
+              {children.length} sub-collection{children.length !== 1 ? 's' : ''}
             </p>
           </div>
 
@@ -621,9 +591,6 @@ export default function CollectionsPage() {
             {parent && <> · part of {parent.name}</>}
           </div>
           <h1 className="text-2xl md:text-3xl font-bold leading-snug mb-2">{current.name}</h1>
-          <p className="text-blue-200 text-sm">
-            {current.directItemCount.toLocaleString()} archived target{current.directItemCount !== 1 ? 's' : ''}
-          </p>
         </div>
 
         <SearchBar value={search} onChange={s => { setSearch(s); setPage(1); }} count={filtered.length} term={search} />

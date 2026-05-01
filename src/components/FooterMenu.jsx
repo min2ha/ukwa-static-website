@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 
+const FOOTER_INFO_HIDDEN = new Set(['about', 'information/technical-information', 'information/notice-and-takedown']);
+
 export default function FooterMenu() {
   const lang = useLanguage();
 
@@ -42,22 +44,24 @@ export default function FooterMenu() {
                 {lang.information.label}
               </h3>
               <ul className="space-y-0.5">
-                {lang.information.pages.map((page) => (
-                  <li key={page.path}>
-                    <NavLink
-                      to={page.path}
-                      className={({ isActive }) =>
-                        `text-xs transition-colors ${
-                          isActive
-                            ? 'text-blue-800 dark:text-dark-100 font-semibold'
-                            : 'text-blue-700 dark:text-dark-400 hover:text-blue-900 dark:hover:text-dark-100'
-                        }`
-                      }
-                    >
-                      {page.name}
-                    </NavLink>
-                  </li>
-                ))}
+                {lang.information.pages
+                  .filter((page) => !FOOTER_INFO_HIDDEN.has(page.slug))
+                  .map((page) => (
+                    <li key={page.path}>
+                      <NavLink
+                        to={page.path}
+                        className={({ isActive }) =>
+                          `text-xs transition-colors ${
+                            isActive
+                              ? 'text-blue-800 dark:text-dark-100 font-semibold'
+                              : 'text-blue-700 dark:text-dark-400 hover:text-blue-900 dark:hover:text-dark-100'
+                          }`
+                        }
+                      >
+                        {page.name}
+                      </NavLink>
+                    </li>
+                  ))}
               </ul>
             </div>
 

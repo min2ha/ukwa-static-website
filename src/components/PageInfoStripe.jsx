@@ -12,7 +12,14 @@ export default function PageInfoStripe({ breadcrumbs, title }) {
           {items.map((item, i) => (
             <span key={i} className="flex items-center gap-1">
               {i > 0 && <span className="text-blue-300 dark:text-dark-500 mx-0.5">/</span>}
-              {item.path ? (
+              {item.onClick ? (
+                <button
+                  onClick={item.onClick}
+                  className="text-blue-200 dark:text-dark-300 hover:text-white dark:hover:text-dark-100 underline underline-offset-2 transition-colors"
+                >
+                  {item.label}
+                </button>
+              ) : item.path ? (
                 <Link
                   to={item.path}
                   className="text-blue-200 dark:text-dark-300 hover:text-white dark:hover:text-dark-100 underline underline-offset-2 transition-colors"

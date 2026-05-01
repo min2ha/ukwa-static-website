@@ -24,7 +24,7 @@ export default function InformationIndexPage({ langCode }) {
             : 'Information about the UK Web Archive and how we operate.'}
         </p>
         <ul className="grid gap-4 sm:grid-cols-2">
-          {info.pages.map((page) => (
+          {info.pages.filter((page) => page.slug !== 'about').map((page) => (
             <li key={page.path}>
               <Link
                 to={page.path}

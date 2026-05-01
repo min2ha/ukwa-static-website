@@ -19,12 +19,12 @@ For more details, see our [FAQs](FAQ.md).
 
 The UK Web Archive is a collaboration between the six UK Legal Deposit Libraries:
 
-- Bodleian Libraries, Oxford
+- [Bodleian Libraries, Oxford](https://www.bodleian.ox.ac.uk/)
 - [British Library](https://www.bl.uk/)
-- Cambridge University Libraries
-- National Library of Scotland
-- National Library of Wales
-- Trinity College, Dublin
+- [Cambridge University Libraries](https://www.lib.cam.ac.uk/)
+- [National Library of Scotland](https://www.nls.uk/)
+- [National Library of Wales](https://www.library.wales/)
+- [Trinity College, Dublin](https://www.tcd.ie/)
 
 ## Contact us
 
