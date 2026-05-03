@@ -37,44 +37,42 @@ const DEFAULT_IMAGE = 'collection_default.png';
 // ─── Image discovery & assignment ────────────────────────────────────────────
 
 function discoverImages() {
-  if (!existsSync(IMAGES_DIR)) return { byId: new Map(), pool: [], hasDefault: false };
+  if (!existsSync(IMAGES_DIR)) return { pool: [], hasDefault: false };
   const all = readdirSync(IMAGES_DIR);
-  const byId = new Map();
   const pool = [];
   for (const name of all) {
-    const m = name.match(IMAGE_PATTERN);
-    if (!m) continue;
-    const id = Number(m[1]);
-    byId.set(id, name);
+    if (name === DEFAULT_IMAGE) continue;
+    if (!IMAGE_PATTERN.test(name)) continue;
     pool.push(name);
   }
-  pool.sort();
   return {
-    byId,
     pool,
     hasDefault: all.includes(DEFAULT_IMAGE),
   };
 }
 
-// Deterministic hash so the same collection id always picks the same image.
-function hashId(id) {
-  let h = 2166136261;
-  const s = String(id);
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
+// Fisher–Yates shuffle (in-place).
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return h >>> 0;
+  return arr;
 }
 
-function pickImage(id, images) {
-  const exact = images.byId.get(id);
-  if (exact) return IMAGE_URL_PREFIX + exact;
-  if (images.pool.length > 0) {
-    return IMAGE_URL_PREFIX + images.pool[hashId(id) % images.pool.length];
+// Build a randomised, even-distribution image assigner.
+// Every collection ID gets a random image from the pool. With more collections
+// than images, the pool is reshuffled and cycled so the same image isn't
+// repeated until the pool is exhausted.
+function makeImagePicker(images) {
+  if (images.pool.length === 0) {
+    return () => images.hasDefault ? IMAGE_URL_PREFIX + DEFAULT_IMAGE : null;
   }
-  if (images.hasDefault) return IMAGE_URL_PREFIX + DEFAULT_IMAGE;
-  return null;
+  let queue = [];
+  return () => {
+    if (queue.length === 0) queue = shuffle([...images.pool]);
+    return IMAGE_URL_PREFIX + queue.pop();
+  };
 }
 
 function discoverSources() {
@@ -160,7 +158,7 @@ function findRoot(map) {
   return null;
 }
 
-function summariseCollection(c, images) {
+function summariseCollection(c, pickImage) {
   return {
     id: c.id,
     name: c.name,
@@ -172,8 +170,7 @@ function summariseCollection(c, images) {
     licence: c.licence,
     crawlStartMin: c.crawlStartMin,
     crawlStartMax: c.crawlStartMax,
-    coverImage: pickImage(c.id, images),
-    coverImageExact: images.byId.has(c.id),
+    coverImage: pickImage(),
   };
 }
 
@@ -215,6 +212,7 @@ function main() {
     `[collections-index] Image pool: ${images.pool.length} images` +
     (images.hasDefault ? ' + default fallback' : '')
   );
+  const pickImage = makeImagePicker(images);
 
   // Reset items directory so deletions in source data propagate
   if (existsSync(OUT_ITEMS_DIR)) rmSync(OUT_ITEMS_DIR, { recursive: true });
@@ -224,8 +222,7 @@ function main() {
   let totalItems = 0;
   let totalCollections = 0;
   let totalItemFiles = 0;
-  let exactImageMatches = 0;
-  let hashedImageMatches = 0;
+  let assignedImages = 0;
 
   for (const src of sources) {
     const { filename, root, collectionMap, totalItems: count } = processSource(src);
@@ -235,10 +232,9 @@ function main() {
 
     const collections = {};
     for (const c of collectionMap.values()) {
-      const summary = summariseCollection(c, images);
+      const summary = summariseCollection(c, pickImage);
       collections[c.id] = summary;
-      if (summary.coverImageExact) exactImageMatches += 1;
-      else if (summary.coverImage) hashedImageMatches += 1;
+      if (summary.coverImage) assignedImages += 1;
     }
 
     datasets.push({
@@ -281,8 +277,8 @@ function main() {
   console.log(`\n[collections-index] manifest.json written (${manifestKb} KB)`);
   console.log(`[collections-index] ${totalItemFiles} per-collection items files written`);
   console.log(
-    `[collections-index] Cover images: ${exactImageMatches} exact match, ` +
-    `${hashedImageMatches} hash-assigned from pool`
+    `[collections-index] Cover images: ${assignedImages} assigned from pool ` +
+    `(pool size ${images.pool.length})`
   );
 }
 

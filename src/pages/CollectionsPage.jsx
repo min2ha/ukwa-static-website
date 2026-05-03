@@ -138,14 +138,30 @@ function Pagination({ page, totalPages, onPage }) {
 
 const FALLBACK_COVER = '/images/TopicsThemes/collections/collection_default.png';
 
-function CoverImage({ src, alt, className = '' }) {
+// Cover sized by the padding-bottom aspect-ratio hack rather than CSS
+// `aspect-ratio`. Safari collapses an `aspect-ratio` flex child to 0 height
+// when every descendant is `position: absolute`, leaving the cover unpainted;
+// padding-bottom drives layout off the parent's resolved width and works
+// identically in Safari/Chrome/Edge. Children use `absolute inset-0` to fill.
+function CoverFrame({ paddingBottom, children }) {
   return (
-    <img
-      src={src ?? FALLBACK_COVER}
-      alt={alt}
-      loading="lazy"
-      onError={e => { e.currentTarget.src = FALLBACK_COVER; }}
-      className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${className}`}
+    <div className="relative w-full shrink-0 overflow-hidden bg-gray-100 dark:bg-dark-900" style={{ paddingBottom }}>
+      {children}
+    </div>
+  );
+}
+
+function CoverBackground({ src, className = '' }) {
+  const primary = src ?? FALLBACK_COVER;
+  const layered = primary === FALLBACK_COVER
+    ? `url('${FALLBACK_COVER}')`
+    : `url('${primary}'), url('${FALLBACK_COVER}')`;
+  return (
+    <div
+      role="img"
+      aria-hidden="true"
+      style={{ backgroundImage: layered }}
+      className={`absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110 ${className}`}
     />
   );
 }
@@ -209,9 +225,9 @@ function DatasetCard({ dataset, onClick }) {
       onClick={onClick}
       className="group relative text-left w-full flex flex-col bg-white dark:bg-dark-800 rounded-2xl border border-gray-200/70 dark:border-dark-700 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2"
     >
-      {/* Cover */}
-      <div className="relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-dark-900">
-        <CoverImage src={cover} alt={dataset.collectionName} />
+      {/* Cover — 16:9 via padding-bottom hack */}
+      <CoverFrame paddingBottom="56.25%">
+        <CoverBackground src={cover} />
 
         {/* Legibility gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10" />
@@ -238,7 +254,7 @@ function DatasetCard({ dataset, onClick }) {
             </p>
           )}
         </div>
-      </div>
+      </CoverFrame>
 
       {/* Body */}
       <div className="flex flex-col flex-1 p-5 gap-4">
@@ -273,9 +289,9 @@ function CollectionCard({ collection, onClick }) {
       onClick={onClick}
       className="group relative text-left w-full flex flex-col bg-white dark:bg-dark-800 rounded-2xl border border-gray-200/70 dark:border-dark-700 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2"
     >
-      {/* Cover */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-900">
-        <CoverImage src={cover} alt={collection.name} />
+      {/* Cover — 16:10 via padding-bottom hack */}
+      <CoverFrame paddingBottom="62.5%">
+        <CoverBackground src={cover} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5" />
 
         {/* Top chips */}
@@ -294,7 +310,7 @@ function CollectionCard({ collection, onClick }) {
             {collection.name}
           </h3>
         </div>
-      </div>
+      </CoverFrame>
 
       {/* Body */}
       <div className="flex flex-col flex-1 p-4 gap-3">
