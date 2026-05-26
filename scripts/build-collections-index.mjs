@@ -60,17 +60,41 @@ function shuffle(arr) {
   return arr;
 }
 
-// Build a randomised, even-distribution image assigner.
-// Every collection ID gets a random image from the pool. With more collections
-// than images, the pool is reshuffled and cycled so the same image isn't
-// repeated until the pool is exhausted.
-function makeImagePicker(images) {
+// Build an image assigner for top-level (root) collection tabs.
+//
+// Algorithm:
+//   1. Exact match — if `collection_{id}.png` exists in the pool, use it.
+//   2. Random fallback — pick from the remaining pool (images not reserved
+//      by any other root's exact match), reshuffling and cycling so the same
+//      image isn't repeated until the remaining pool is exhausted.
+//
+// `knownRootIds` is the list of root IDs that will request images, so the
+// random fallback can exclude their reserved exact-match files up-front and
+// two roots never collide on the same image. When a new collection JSON is
+// uploaded (with a new root ID), the build script auto-discovers it and the
+// matching `collection_{newId}.png` is picked up here on the next build.
+function makeImagePicker(images, knownRootIds = []) {
   if (images.pool.length === 0) {
     return () => images.hasDefault ? IMAGE_URL_PREFIX + DEFAULT_IMAGE : null;
   }
+  const byId = new Map();
+  for (const name of images.pool) {
+    const m = name.match(IMAGE_PATTERN);
+    if (m) byId.set(Number(m[1]), name);
+  }
+  const reserved = new Set();
+  for (const id of knownRootIds) {
+    const match = byId.get(Number(id));
+    if (match) reserved.add(match);
+  }
+  const randomPool = images.pool.filter(name => !reserved.has(name));
+  const fallbackPool = randomPool.length > 0 ? randomPool : images.pool;
   let queue = [];
-  return () => {
-    if (queue.length === 0) queue = shuffle([...images.pool]);
+  return (id) => {
+    if (id != null && byId.has(Number(id))) {
+      return IMAGE_URL_PREFIX + byId.get(Number(id));
+    }
+    if (queue.length === 0) queue = shuffle([...fallbackPool]);
     return IMAGE_URL_PREFIX + queue.pop();
   };
 }
@@ -158,7 +182,7 @@ function findRoot(map) {
   return null;
 }
 
-function summariseCollection(c, pickImage) {
+function summariseCollection(c) {
   return {
     id: c.id,
     name: c.name,
@@ -170,7 +194,6 @@ function summariseCollection(c, pickImage) {
     licence: c.licence,
     crawlStartMin: c.crawlStartMin,
     crawlStartMax: c.crawlStartMax,
-    coverImage: pickImage(),
   };
 }
 
@@ -212,29 +235,39 @@ function main() {
     `[collections-index] Image pool: ${images.pool.length} images` +
     (images.hasDefault ? ' + default fallback' : '')
   );
-  const pickImage = makeImagePicker(images);
 
   // Reset items directory so deletions in source data propagate
   if (existsSync(OUT_ITEMS_DIR)) rmSync(OUT_ITEMS_DIR, { recursive: true });
   mkdirSync(OUT_ITEMS_DIR, { recursive: true });
+
+  // Parse all sources first so we know every root ID before assigning images.
+  // This lets the picker reserve exact-match images so two roots can't collide.
+  const processed = sources.map(processSource);
+  const rootIds = processed.map(p => p.root.id);
+  const pickImage = makeImagePicker(images, rootIds);
 
   const datasets = [];
   let totalItems = 0;
   let totalCollections = 0;
   let totalItemFiles = 0;
   let assignedImages = 0;
+  let exactMatches = 0;
 
-  for (const src of sources) {
-    const { filename, root, collectionMap, totalItems: count } = processSource(src);
-
+  for (const { filename, root, collectionMap, totalItems: count } of processed) {
     const written = writeItemFiles(collectionMap);
     totalItemFiles += written;
 
     const collections = {};
     for (const c of collectionMap.values()) {
-      const summary = summariseCollection(c, pickImage);
-      collections[c.id] = summary;
-      if (summary.coverImage) assignedImages += 1;
+      collections[c.id] = summariseCollection(c);
+    }
+
+    // Only top-level (root) collections render a cover image in the UI.
+    const rootCover = pickImage(root.id);
+    if (rootCover) {
+      collections[root.id].coverImage = rootCover;
+      assignedImages += 1;
+      if (rootCover.endsWith(`collection_${root.id}.png`)) exactMatches += 1;
     }
 
     datasets.push({
@@ -252,7 +285,8 @@ function main() {
 
     console.log(
       `  ✓ ${root.name} (#${root.id}): ${count.toLocaleString()} items across ` +
-      `${collectionMap.size} collection(s), ${written} items file(s) written.`
+      `${collectionMap.size} collection(s), ${written} items file(s) written` +
+      (rootCover ? ` → ${basename(rootCover)}` : '') + '.'
     );
   }
 
@@ -277,8 +311,9 @@ function main() {
   console.log(`\n[collections-index] manifest.json written (${manifestKb} KB)`);
   console.log(`[collections-index] ${totalItemFiles} per-collection items files written`);
   console.log(
-    `[collections-index] Cover images: ${assignedImages} assigned from pool ` +
-    `(pool size ${images.pool.length})`
+    `[collections-index] Cover images: ${assignedImages} assigned to root collections ` +
+    `(${exactMatches} exact-ID match, ${assignedImages - exactMatches} random fallback; ` +
+    `pool size ${images.pool.length})`
   );
 }
 

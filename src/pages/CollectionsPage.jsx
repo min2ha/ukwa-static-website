@@ -250,20 +250,17 @@ function DatasetCard({ dataset, onClick }) {
           </h2>
           {subCount > 0 && (
             <p className="text-white/85 text-xs mt-1.5 font-medium">
-              {`${subCount} sub-collection${subCount !== 1 ? 's' : ''}`}
+              {`${subCount} subsection${subCount !== 1 ? 's' : ''}`}
             </p>
           )}
         </div>
       </CoverFrame>
 
       {/* Body */}
-      <div className="flex flex-col flex-1 p-5 gap-4">
-        <div className="mt-auto flex items-center justify-between pt-3 border-t border-gray-100 dark:border-dark-700">
-          <span className="text-sm text-gray-500 dark:text-dark-400">
-            {subCount > 0 ? 'Browse sub-collections' : 'Browse archived targets'}
-          </span>
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent-primary group-hover:gap-2 transition-all">
-            Open
+      <div className="flex flex-col flex-1 w-full p-5 gap-4">
+        <div className="mt-auto w-full flex items-center pt-3 border-t border-gray-100 dark:border-dark-700">
+          <span className="ml-auto inline-flex items-center gap-1 text-sm font-semibold text-accent-primary group-hover:gap-2 transition-all">
+            View
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -277,48 +274,32 @@ function DatasetCard({ dataset, onClick }) {
 // ─── Sub-collection card ──────────────────────────────────────────────────────
 
 function CollectionCard({ collection, onClick }) {
-  const yearMin = formatYear(collection.crawlStartMin);
-  const yearMax = formatYear(collection.crawlStartMax);
   const hasChildren = collection.children?.length > 0;
-  const total = collection.subtreeItemCount;
-  const cover = collection.coverImage ?? FALLBACK_COVER;
-  const coverage = yearMin && yearMax ? (yearMin === yearMax ? yearMin : `${yearMin}–${yearMax}`) : '—';
 
   return (
     <button
       onClick={onClick}
       className="group relative text-left w-full flex flex-col bg-white dark:bg-dark-800 rounded-2xl border border-gray-200/70 dark:border-dark-700 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2"
     >
-      {/* Cover — 16:10 via padding-bottom hack */}
+      {/* Empty frame — 16:10 via padding-bottom hack */}
       <CoverFrame paddingBottom="62.5%">
-        <CoverBackground src={cover} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5" />
-
-        {/* Top chips */}
         <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-          <div className="inline-flex items-center gap-1 bg-white/15 backdrop-blur-md rounded-full px-2 py-0.5 text-[10px] text-white font-semibold border border-white/20 uppercase tracking-wider">
-            {hasChildren ? `${collection.children.length} sub` : 'Subcollection'}
+          <div className="inline-flex items-center gap-1 bg-gray-200/80 dark:bg-dark-700/80 rounded-full px-2 py-0.5 text-[10px] text-gray-600 dark:text-dark-400 font-semibold uppercase tracking-wider">
+            {hasChildren ? `${collection.children.length} subsection${collection.children.length !== 1 ? 's' : ''}` : 'Subsection'}
           </div>
-          <span className="inline-flex items-center bg-black/45 backdrop-blur-md rounded-md px-1.5 py-0.5 text-[10px] text-white/95 font-mono tabular-nums">
+          <span className="inline-flex items-center bg-gray-200/80 dark:bg-dark-700/80 rounded-md px-1.5 py-0.5 text-[10px] text-gray-600 dark:text-dark-400 font-mono tabular-nums">
             #{collection.id}
           </span>
-        </div>
-
-        {/* Title overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="text-white text-base font-bold leading-snug tracking-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] line-clamp-2">
-            {collection.name}
-          </h3>
         </div>
       </CoverFrame>
 
       {/* Body */}
-      <div className="flex flex-col flex-1 p-4 gap-3">
-        <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-100 dark:border-dark-700">
-          <span className="text-xs text-gray-500 dark:text-dark-400">
-            {hasChildren ? `${collection.children.length} sub-collection${collection.children.length !== 1 ? 's' : ''}` : ''}
-          </span>
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-accent-primary group-hover:gap-2 transition-all">
+      <div className="flex flex-col flex-1 w-full p-4 gap-3">
+        <h3 className="text-sm font-bold text-gray-900 dark:text-dark-100 leading-snug tracking-tight line-clamp-2">
+          {collection.name}
+        </h3>
+        <div className="mt-auto w-full flex items-center pt-2 border-t border-gray-100 dark:border-dark-700">
+          <span className="ml-auto inline-flex items-center gap-1 text-xs font-semibold text-accent-primary group-hover:gap-2 transition-all">
             {'View'}
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -569,7 +550,7 @@ export default function CollectionsPage() {
             <div className="text-blue-200 text-sm font-medium mb-1">Collection #{current.id}</div>
             <h1 className="text-2xl md:text-3xl font-bold leading-snug mb-2">{current.name}</h1>
             <p className="text-blue-200 text-sm">
-              {children.length} sub-collection{children.length !== 1 ? 's' : ''}
+              {children.length} subsection{children.length !== 1 ? 's' : ''}
             </p>
           </div>
 
