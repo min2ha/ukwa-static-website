@@ -48,18 +48,29 @@ export default function FooterMenu() {
                   .filter((page) => !FOOTER_INFO_HIDDEN.has(page.slug))
                   .map((page) => (
                     <li key={page.path}>
-                      <NavLink
-                        to={page.path}
-                        className={({ isActive }) =>
-                          `text-xs transition-colors ${
-                            isActive
-                              ? 'text-blue-800 dark:text-dark-100 font-semibold'
-                              : 'text-blue-700 dark:text-dark-400 hover:text-blue-900 dark:hover:text-dark-100'
-                          }`
-                        }
-                      >
-                        {page.name}
-                      </NavLink>
+                      {page.isExternal ? (
+                        <a
+                          href={page.path}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs transition-colors text-blue-700 dark:text-dark-400 hover:text-blue-900 dark:hover:text-dark-100"
+                        >
+                          {page.name}
+                        </a>
+                      ) : (
+                        <NavLink
+                          to={page.path}
+                          className={({ isActive }) =>
+                            `text-xs transition-colors ${
+                              isActive
+                                ? 'text-blue-800 dark:text-dark-100 font-semibold'
+                                : 'text-blue-700 dark:text-dark-400 hover:text-blue-900 dark:hover:text-dark-100'
+                            }`
+                          }
+                        >
+                          {page.name}
+                        </NavLink>
+                      )}
                     </li>
                   ))}
               </ul>

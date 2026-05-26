@@ -43,7 +43,6 @@ function App() {
           {/* Information section */}
           <Route path="/information" element={<InformationIndexPage langCode="en" />} />
           <Route path="/information/faq" element={<MarkdownPage lang="en" slug="information/faq" theme={theme} parentBreadcrumbs={infoCrumbs(en)} />} />
-          <Route path="/information/cookie-policy" element={<MarkdownPage lang="en" slug="information/cookie-policy" theme={theme} parentBreadcrumbs={infoCrumbs(en)} />} />
           <Route path="/information/accessibility" element={<MarkdownPage lang="en" slug="information/accessibility" theme={theme} parentBreadcrumbs={infoCrumbs(en)} />} />
           <Route path="/information/terms" element={<MarkdownPage lang="en" slug="information/terms" theme={theme} parentBreadcrumbs={infoCrumbs(en)} />} />
           <Route path="/information/technical-information" element={<MarkdownPage lang="en" slug="information/technical-information" theme={theme} parentBreadcrumbs={infoCrumbs(en)} />} />
@@ -57,7 +56,6 @@ function App() {
           <Route path="/cy/about" element={<MarkdownPage lang="cy" slug="about" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
           <Route path="/cy/information" element={<InformationIndexPage langCode="cy" />} />
           <Route path="/cy/information/faq" element={<MarkdownPage lang="cy" slug="information/faq" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
-          <Route path="/cy/information/cookie-policy" element={<MarkdownPage lang="cy" slug="information/cookie-policy" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
           <Route path="/cy/information/accessibility" element={<MarkdownPage lang="cy" slug="information/accessibility" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
           <Route path="/cy/information/terms" element={<MarkdownPage lang="cy" slug="information/terms" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
           <Route path="/cy/information/technical-information" element={<MarkdownPage lang="cy" slug="information/technical-information" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
@@ -71,7 +69,6 @@ function App() {
           <Route path="/gd/about" element={<MarkdownPage lang="gd" slug="about" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
           <Route path="/gd/information" element={<InformationIndexPage langCode="gd" />} />
           <Route path="/gd/information/faq" element={<MarkdownPage lang="gd" slug="information/faq" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
-          <Route path="/gd/information/cookie-policy" element={<MarkdownPage lang="gd" slug="information/cookie-policy" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
           <Route path="/gd/information/accessibility" element={<MarkdownPage lang="gd" slug="information/accessibility" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
           <Route path="/gd/information/terms" element={<MarkdownPage lang="gd" slug="information/terms" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
           <Route path="/gd/information/technical-information" element={<MarkdownPage lang="gd" slug="information/technical-information" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />

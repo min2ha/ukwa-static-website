@@ -19,7 +19,7 @@ export const languages = {
       pages: [
         { name: 'About Us', path: '/about', slug: 'about' },
         { name: 'FAQ', path: '/information/faq', slug: 'information/faq' },
-        { name: 'Cookie Policy', path: '/information/cookie-policy', slug: 'information/cookie-policy' },
+        { name: 'Cookie Policy', path: 'https://join-britishlibrary.co.uk/cookie-policy/', isExternal: true },
         { name: 'Accessibility Statement', path: '/information/accessibility', slug: 'information/accessibility' },
         { name: 'Terms and Conditions', path: '/information/terms', slug: 'information/terms' },
         { name: 'Technical Information', path: '/information/technical-information', slug: 'information/technical-information' },
@@ -47,7 +47,7 @@ export const languages = {
       pages: [
         { name: 'Amdanom Ni', path: '/cy/about', slug: 'about' },
         { name: 'Cwestiynau Cyffredin', path: '/cy/information/faq', slug: 'information/faq' },
-        { name: 'Polisi Cwcis', path: '/cy/information/cookie-policy', slug: 'information/cookie-policy' },
+        { name: 'Polisi Cwcis', path: 'https://join-britishlibrary.co.uk/cookie-policy/', isExternal: true },
         { name: 'Datganiad Hygyrchedd', path: '/cy/information/accessibility', slug: 'information/accessibility' },
         { name: 'Telerau ac Amodau', path: '/cy/information/terms', slug: 'information/terms' },
         { name: 'Gwybodaeth Dechnegol', path: '/cy/information/technical-information', slug: 'information/technical-information' },
@@ -75,7 +75,7 @@ export const languages = {
       pages: [
         { name: 'Mu ar Deidhinn', path: '/gd/about', slug: 'about' },
         { name: 'Ceistean Cumanta', path: '/gd/information/faq', slug: 'information/faq' },
-        { name: 'Poileasaidh Briosgaidean', path: '/gd/information/cookie-policy', slug: 'information/cookie-policy' },
+        { name: 'Poileasaidh Briosgaidean', path: 'https://join-britishlibrary.co.uk/cookie-policy/', isExternal: true },
         { name: 'Aithris In-ruigsinneachd', path: '/gd/information/accessibility', slug: 'information/accessibility' },
         { name: 'Teirmichean is Cumhaichean', path: '/gd/information/terms', slug: 'information/terms' },
         { name: 'Fiosrachadh Teicnigeach', path: '/gd/information/technical-information', slug: 'information/technical-information' },
