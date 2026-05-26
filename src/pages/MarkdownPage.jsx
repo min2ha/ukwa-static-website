@@ -47,7 +47,7 @@ export default function MarkdownPage({ lang, slug, theme, parentBreadcrumbs }) {
         <MarkdownRenderer
           content={content}
           theme={theme}
-          afterParagraph={slug === '' ? 'The UK Web Archive is available online.' : undefined}
+          afterFirstHeading={slug === ''}
           insertNode={slug === '' ? <UrlSearchBox theme={theme} /> : undefined}
         />
       </main>
