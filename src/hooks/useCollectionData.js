@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 const BASE = '/DataSets/Collections/';
 const MANIFEST_URL = `${BASE}manifest.json`;
 const ITEMS_URL = (id) => `${BASE}items/${id}.json`;
+const SEARCH_INDEX_URL = `${BASE}search-index.json`;
 
 /**
  * useCollectionData
@@ -27,8 +28,11 @@ export function useCollectionData() {
   const [loadingManifest, setLoadingManifest] = useState(true);
   const [error, setError] = useState(null);
   const [loadingItems, setLoadingItems] = useState({});
+  const [searchIndex, setSearchIndex] = useState(null);
+  const [loadingSearchIndex, setLoadingSearchIndex] = useState(false);
   const itemsCacheRef = useRef(new Map());
   const collectionIndexRef = useRef(new Map()); // id -> { collection, datasetId }
+  const searchIndexPromiseRef = useRef(null);
 
   // Fetch the manifest once
   useEffect(() => {
@@ -93,6 +97,26 @@ export function useCollectionData() {
     return c.children.map(cid => getCollection(cid)).filter(Boolean);
   }, [getCollection]);
 
+  // Lazy-fetch the global target search index (one large compact JSON of all
+  // targets across every dataset, ~8MB raw / ~2MB gzipped). Only triggered when
+  // the autocomplete is first focused so it never blocks initial page load.
+  const loadSearchIndex = useCallback(() => {
+    if (searchIndex) return Promise.resolve(searchIndex);
+    if (searchIndexPromiseRef.current) return searchIndexPromiseRef.current;
+    setLoadingSearchIndex(true);
+    const p = fetch(SEARCH_INDEX_URL)
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then(data => {
+        const rows = Array.isArray(data?.rows) ? data.rows : [];
+        setSearchIndex(rows);
+        return rows;
+      })
+      .catch(e => { setError(e.message); return []; })
+      .finally(() => setLoadingSearchIndex(false));
+    searchIndexPromiseRef.current = p;
+    return p;
+  }, [searchIndex]);
+
   // Walk up the higherLevel chain to build the breadcrumb path
   const getAncestors = useCallback((id) => {
     const chain = [];
@@ -119,5 +143,8 @@ export function useCollectionData() {
     getDatasetIdFor,
     getChildren,
     getAncestors,
+    loadSearchIndex,
+    searchIndex,
+    loadingSearchIndex,
   };
 }

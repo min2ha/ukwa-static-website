@@ -29,6 +29,7 @@ const IMAGES_DIR = join(ROOT, 'public', 'images', 'TopicsThemes', 'collections')
 const IMAGE_URL_PREFIX = '/images/TopicsThemes/collections/';
 const OUT_MANIFEST = join(COLLECTIONS_DIR, 'manifest.json');
 const OUT_ITEMS_DIR = join(COLLECTIONS_DIR, 'items');
+const OUT_SEARCH_INDEX = join(COLLECTIONS_DIR, 'search-index.json');
 
 const SOURCE_PATTERN = /^multi-tier-hierarchy-dataset-collection-.+\.json$/;
 const IMAGE_PATTERN = /^collection_(\d+)\.png$/i;
@@ -220,6 +221,41 @@ function writeItemFiles(collectionMap) {
   return written;
 }
 
+// Reduce a Primary Seed URL to a bare hostname (no protocol, no leading www.)
+// so the search index stays compact. Falls back to the raw value if it can't
+// be parsed as a URL.
+function extractDomain(url) {
+  if (!url) return '';
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return String(url).replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+  }
+}
+
+// Build a single compact array of every target across every dataset so the
+// site can autocomplete-search across the whole archive without fetching
+// every items/{id}.json. Short keys keep the file size manageable
+// (~7-10MB for ~71k targets at the time of writing).
+//
+//   row = { i: recordId, t: title, d: domain, c: collectionId }
+function buildTargetSearchRows(collectionMap) {
+  const rows = [];
+  for (const c of collectionMap.values()) {
+    for (const item of c.directItems) {
+      const title = item['Title of Target'];
+      if (!title) continue;
+      rows.push({
+        i: item['Record ID'],
+        t: title,
+        d: extractDomain(item['Primary Seed']),
+        c: c.id,
+      });
+    }
+  }
+  return rows;
+}
+
 function main() {
   const sources = discoverSources();
   if (sources.length === 0) {
@@ -247,6 +283,7 @@ function main() {
   const pickImage = makeImagePicker(images, rootIds);
 
   const datasets = [];
+  const searchRows = [];
   let totalItems = 0;
   let totalCollections = 0;
   let totalItemFiles = 0;
@@ -256,6 +293,9 @@ function main() {
   for (const { filename, root, collectionMap, totalItems: count } of processed) {
     const written = writeItemFiles(collectionMap);
     totalItemFiles += written;
+
+    // Accumulate flat search rows for the global autocomplete index.
+    for (const row of buildTargetSearchRows(collectionMap)) searchRows.push(row);
 
     const collections = {};
     for (const c of collectionMap.values()) {
@@ -307,8 +347,20 @@ function main() {
 
   writeFileSync(OUT_MANIFEST, JSON.stringify(manifest, null, 2));
 
+  // Write the flat target search index. Unminified pretty-print would
+  // roughly double the size, so we keep it as one compact line.
+  const searchIndex = {
+    version: '1.0',
+    generated: manifest.generated,
+    count: searchRows.length,
+    rows: searchRows,
+  };
+  writeFileSync(OUT_SEARCH_INDEX, JSON.stringify(searchIndex));
+
   const manifestKb = (Buffer.byteLength(JSON.stringify(manifest)) / 1024).toFixed(1);
+  const searchKb = (Buffer.byteLength(JSON.stringify(searchIndex)) / 1024).toFixed(1);
   console.log(`\n[collections-index] manifest.json written (${manifestKb} KB)`);
+  console.log(`[collections-index] search-index.json written (${searchKb} KB, ${searchRows.length.toLocaleString()} targets)`);
   console.log(`[collections-index] ${totalItemFiles} per-collection items files written`);
   console.log(
     `[collections-index] Cover images: ${assignedImages} assigned to root collections ` +

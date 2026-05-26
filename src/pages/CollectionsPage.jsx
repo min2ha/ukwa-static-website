@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import PageInfoStripe from '../components/PageInfoStripe';
+import CollectionsSearch from '../components/CollectionsSearch';
 import { useCollectionData } from '../hooks/useCollectionData';
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 15;
 
 // ─── Badge colour maps ────────────────────────────────────────────────────────
 
@@ -274,39 +275,54 @@ function DatasetCard({ dataset, onClick }) {
 // ─── Sub-collection card ──────────────────────────────────────────────────────
 
 function CollectionCard({ collection, onClick }) {
-  const hasChildren = collection.children?.length > 0;
+  const childCount = collection.children?.length ?? 0;
+  const hasChildren = childCount > 0;
+  const itemCount = collection.subtreeItemCount ?? collection.directItemCount ?? 0;
 
   return (
     <button
       onClick={onClick}
-      className="group relative text-left w-full flex flex-col bg-white dark:bg-dark-800 rounded-2xl border border-gray-200/70 dark:border-dark-700 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2"
+      className="group relative text-left w-full flex items-center gap-3 bg-white dark:bg-dark-800 rounded-xl border border-gray-200/80 dark:border-dark-700 shadow-sm hover:shadow-md hover:border-accent-primary/40 dark:hover:border-accent-primary/40 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-1 px-4 py-3"
     >
-      {/* Empty frame — 16:10 via padding-bottom hack */}
-      <CoverFrame paddingBottom="62.5%">
-        <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-          <div className="inline-flex items-center gap-1 bg-gray-200/80 dark:bg-dark-700/80 rounded-full px-2 py-0.5 text-[10px] text-gray-600 dark:text-dark-400 font-semibold uppercase tracking-wider">
-            {hasChildren ? `${collection.children.length} subsection${collection.children.length !== 1 ? 's' : ''}` : 'Subsection'}
-          </div>
-          <span className="inline-flex items-center bg-gray-200/80 dark:bg-dark-700/80 rounded-md px-1.5 py-0.5 text-[10px] text-gray-600 dark:text-dark-400 font-mono tabular-nums">
-            #{collection.id}
-          </span>
-        </div>
-      </CoverFrame>
+      {/* Accent rail */}
+      <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-accent-primary/70 to-accent-secondary/70 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-      {/* Body */}
-      <div className="flex flex-col flex-1 w-full p-4 gap-3">
-        <h3 className="text-sm font-bold text-gray-900 dark:text-dark-100 leading-snug tracking-tight line-clamp-2">
+      {/* Folder glyph */}
+      <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-primary/10 dark:bg-accent-primary/15 text-accent-primary shrink-0">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+            d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+        </svg>
+      </span>
+
+      {/* Title + meta */}
+      <span className="flex-1 min-w-0">
+        <span className="block text-sm font-semibold text-gray-900 dark:text-dark-100 leading-snug truncate">
           {collection.name}
-        </h3>
-        <div className="mt-auto w-full flex items-center pt-2 border-t border-gray-100 dark:border-dark-700">
-          <span className="ml-auto inline-flex items-center gap-1 text-xs font-semibold text-accent-primary group-hover:gap-2 transition-all">
-            {'View'}
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </span>
-        </div>
-      </div>
+        </span>
+        <span className="mt-0.5 flex items-center gap-2 text-[11px] text-gray-500 dark:text-dark-400">
+          <span className="font-mono tabular-nums text-gray-400 dark:text-dark-500">#{collection.id}</span>
+          {hasChildren && (
+            <>
+              <span aria-hidden className="text-gray-300 dark:text-dark-600">·</span>
+              <span>{childCount} subsection{childCount !== 1 ? 's' : ''}</span>
+            </>
+          )}
+          {itemCount > 0 && (
+            <>
+              <span aria-hidden className="text-gray-300 dark:text-dark-600">·</span>
+              <span>{itemCount.toLocaleString()} target{itemCount === 1 ? '' : 's'}</span>
+            </>
+          )}
+        </span>
+      </span>
+
+      {/* Chevron */}
+      <span className="inline-flex items-center justify-center w-7 h-7 rounded-md text-gray-400 dark:text-dark-500 group-hover:text-accent-primary group-hover:bg-accent-primary/10 transition-colors shrink-0">
+        <svg className="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </span>
     </button>
   );
 }
@@ -397,6 +413,7 @@ export default function CollectionsPage() {
     manifest, loadingManifest, error,
     loadCollectionItems, isItemsLoading,
     getCollection, getChildren, getAncestors,
+    loadSearchIndex, searchIndex, loadingSearchIndex,
   } = useCollectionData();
 
   // Navigation: stack of collection IDs from root → current.
@@ -440,6 +457,31 @@ export default function CollectionsPage() {
     setPage(1);
     setSearch('');
   }, []);
+
+  // Jump to any collection (anywhere in the tree) by rebuilding the full
+  // root → ... → target path. Used by the autocomplete to land the user
+  // wherever they picked, breadcrumb intact.
+  const navigateToCollection = useCallback((id) => {
+    if (id == null) return;
+    const ancestors = getAncestors(id);
+    const fullPath = [...ancestors.map(a => a.id), Number(id)];
+    setPath(fullPath);
+    setPage(1);
+    setSearch('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [getAncestors]);
+
+  // Jump to a target's parent collection and pre-filter the leaf view by its
+  // title so the chosen result is the (typically only) card on screen.
+  const navigateToTarget = useCallback((target) => {
+    if (!target) return;
+    const ancestors = getAncestors(target.collectionId);
+    const fullPath = [...ancestors.map(a => a.id), Number(target.collectionId)];
+    setPath(fullPath);
+    setPage(1);
+    setSearch(target.title ?? '');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [getAncestors]);
 
   const handlePageChange = useCallback((p) => {
     setPage(p);
@@ -502,8 +544,24 @@ export default function CollectionsPage() {
               UK Web Archive
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-dark-100 leading-tight">
-              Top Collections
+              Collections and Themes
             </h1>
+            <p className="mt-2 text-sm md:text-base text-gray-500 dark:text-dark-400 max-w-2xl">
+              Browse curated themes below, or search instantly across every collection,
+              subsection and archived website.
+            </p>
+          </div>
+
+          <div className="mb-10">
+            <CollectionsSearch
+              manifest={manifest}
+              loadSearchIndex={loadSearchIndex}
+              searchIndex={searchIndex}
+              loadingSearchIndex={loadingSearchIndex}
+              getCollection={getCollection}
+              onPickCollection={navigateToCollection}
+              onPickTarget={navigateToTarget}
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
