@@ -4,11 +4,13 @@ import Footer from './components/Footer';
 import FooterLogos from './components/FooterLogos';
 import FooterMenu from './components/FooterMenu';
 import ScrollToTop from './components/ScrollToTop';
+import CookieBanner from './components/CookieBanner';
 import MarkdownPage from './pages/MarkdownPage';
 import InformationIndexPage from './pages/InformationIndexPage';
 import CollectionsPage from './pages/CollectionsPage';
 import SitemapPage from './pages/SitemapPage';
 import { useTheme } from './hooks/useTheme';
+import { useCookieConsent } from './hooks/useCookieConsent';
 import { languages } from './config/languages';
 
 function infoCrumbs(lang) {
@@ -20,6 +22,7 @@ function infoCrumbs(lang) {
 
 function App() {
   const { theme, toggleTheme } = useTheme();
+  const cookies = useCookieConsent();
   const en = languages.en;
   const cy = languages.cy;
   const gd = languages.gd;
@@ -83,9 +86,16 @@ function App() {
         </Routes>
       </div>
 
-      <FooterMenu />
+      <FooterMenu onManageCookies={cookies.openBanner} />
       <FooterLogos />
       <Footer />
+
+      <CookieBanner
+        open={cookies.bannerOpen}
+        onAccept={() => { cookies.accept(); cookies.closeBanner(); }}
+        onReject={() => { cookies.reject(); cookies.closeBanner(); }}
+        onClose={cookies.closeBanner}
+      />
     </div>
   );
 }

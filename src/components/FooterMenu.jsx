@@ -3,7 +3,13 @@ import { useLanguage } from '../hooks/useLanguage';
 
 const FOOTER_INFO_HIDDEN = new Set(['about', 'information/technical-information', 'information/notice-and-takedown']);
 
-export default function FooterMenu() {
+const MANAGE_COOKIES_LABEL = {
+  en: 'Manage cookies',
+  cy: 'Rheoli cwcis',
+  gd: 'Stiùirich criomagan',
+};
+
+export default function FooterMenu({ onManageCookies }) {
   const lang = useLanguage();
 
   return (
@@ -73,6 +79,17 @@ export default function FooterMenu() {
                       )}
                     </li>
                   ))}
+                {onManageCookies && (
+                  <li>
+                    <button
+                      type="button"
+                      onClick={onManageCookies}
+                      className="text-xs transition-colors text-blue-700 dark:text-dark-400 hover:text-blue-900 dark:hover:text-dark-100 underline-offset-2 hover:underline"
+                    >
+                      {MANAGE_COOKIES_LABEL[lang.code] || MANAGE_COOKIES_LABEL.en}
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
 
