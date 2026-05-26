@@ -13,19 +13,24 @@ Websites are a vital record of our times. Yet they are often created quickly, up
 
 Each year, we carry out a large-scale automated collection (known as a crawl) of UK websites, capturing millions of sites and billions of individual assets (such as HTML pages, images, PDFs, and videos). Some websites - particularly news sites and others of high importance - are collected much more frequently, in some cases daily. In addition, our curators and subject specialists create focused collections around particular events, topics, or themes, often in collaboration with external organisations. We only archive material that is publicly available on the open web. We do not collect private content such as emails, and only a very limited amount of social media is preserved due to technical challenges and privacy concerns.
 
-For more details, see our [FAQs](FAQ.md).
+For more details, see our [<u>FAQs</u>](https://icy-plant-0de1f8103.7.azurestaticapps.net/FAQ.md).
 
 ## Who are we?
 
 The UK Web Archive is a collaboration between the six UK Legal Deposit Libraries:
 
-- [Bodleian Libraries, Oxford](https://www.bodleian.ox.ac.uk/)
-- [British Library](https://www.bl.uk/)
-- [Cambridge University Libraries](https://www.lib.cam.ac.uk/)
-- [National Library of Scotland](https://www.nls.uk/)
-- [National Library of Wales](https://www.library.wales/)
-- [Trinity College, Dublin](https://www.tcd.ie/)
+- [<u>Bodleian Libraries, Oxford</u>](https://www.bodleian.ox.ac.uk/)
+
+- [<u>British Library</u>](https://www.bl.uk/)
+
+- [<u>Cambridge University Libraries</u>](https://www.lib.cam.ac.uk/)
+
+- [<u>National Library of Scotland</u>](https://www.nls.uk/)
+
+- [<u>National Library of Wales</u>](https://www.library.wales/)
+
+- [<u>Trinity College, Dublin</u>](https://www.tcd.ie/)
 
 ## Contact us
 
-Email: web-archivist@bl.uk
+If you need to get in touch for any reason, email: [<u>web-archivist@bl.uk</u>](mailto:web-archivist@bl.uk)

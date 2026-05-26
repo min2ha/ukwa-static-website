@@ -3,7 +3,7 @@ title: "Terms and Conditions"
 description: "Terms and conditions for using the UK Web Archive"
 ---
 
-## Terms and Conditions
+# Terms and Conditions
 
 ## General
 

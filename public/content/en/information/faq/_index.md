@@ -5,7 +5,7 @@ description: "Frequently asked questions about the UK Web Archive"
 
 # Frequently Asked Questions
 
-## What is a Web Archive?
+## What is a web archive?
 
 A web archive is a collection of saved websites and online content that are preserved over time, so they can be accessed in the future, even if the original sites change or disappear.
 
@@ -16,7 +16,9 @@ For example, services like the UK Web Archive or the Wayback Machine regularly c
 Web archives are important because:
 
 - Websites can be deleted, updated, or lost
+
 - They preserve digital history and culture
+
 - They support research, journalism, and accountability
 
 In short, a web archive keeps a record of the internet as it changes over time.
@@ -31,43 +33,52 @@ As the site continues to develop, additional features will be introduced, includ
 
 In the coming months, the UK Web Archive will also be accessible in the reading rooms of the six UK legal deposit libraries, where you'll be able to explore a far more comprehensive collection.
 
+## UK Web Archive Datasets
+
+UK Web Archive datasets are published, structured extracts of web archive metadata (rather than full archived website content), curated and released for research use. They comprise metadata about websites, pages and captures, along with curatorial information produced by UKWA staff and systems. Datasets are provided as downloadable files (e.g. TSV or CSV) in structured formats suitable for analysis.
+
+These datasets describe selected UK Web Archive collections that have been ‘closed’, meaning they are no longer being updated and can be treated as static research resources.
+
+Each dataset is accompanied by a datasheet—a documentation framework designed to help researchers understand the dataset’s contents, provenance and creation process. Datasets and their accompanying documentation are available via the British Library Research Repository:**  
+[Browse UKWA datasets in the British Library repository](https://bl.iro.bl.uk/collections/5379d014-1774-46e1-a96a-7089e7c814a3) \[hyperlink to https://bl.iro.bl.uk/collections/5379d014-1774-46e1-a96a-7089e7c814a3\]**
+
 ## How does web archiving work?
 
 Web archiving works by collecting, storing, and preserving copies of websites so they can be accessed later, even if the original content changes or disappears.
 
 Here's how the process typically works:
 
-1. Selection
+1.  Selection
 
 Archivists decide which websites to preserve.
 
-2. Crawling (capturing the site)
+2.  Crawling (capturing the site)
 
-Special software, often called a web crawler, automatically visits a website and saves its content. The web crawler used by the UK Web Archive is called [Heritrix](https://en.wikipedia.org/wiki/Heritrix). It follows links on pages, copying text, images, and sometimes multimedia files.
+Special software, often called a web crawler, automatically visits a website and saves its content. The web crawler used by the UK Web Archive is called [<u>Heritrix</u>](https://en.wikipedia.org/wiki/Heritrix). It follows links on pages, copying text, images, and sometimes multimedia files.
 
-In addition, the UK Web Archive uses [Browsertrix](https://webrecorder.net/browsertrix/) to capture websites, especially those that rely heavily on JavaScript and interactive features.
+In addition, the UK Web Archive uses [<u>Browsertrix</u>](https://webrecorder.net/browsertrix/) to capture websites, especially those that rely heavily on JavaScript and interactive features.
 
-Developed by [Webrecorder](https://webrecorder.net/), Browsertrix works by running a real web browser, like Chrome, in an automated way. Instead of just downloading page files, it actually browses the site, clicking links and loading content, so it can capture dynamic elements that older archiving tools might miss.
+Developed by [<u>Webrecorder</u>](https://webrecorder.net/), Browsertrix works by running a real web browser, like Chrome, in an automated way. Instead of just downloading page files, it actually browses the site, clicking links and loading content, so it can capture dynamic elements that older archiving tools might miss.
 
-3. Storage and preservation
+3.  Storage and preservation
 
 The captured data is stored in a large digital repository at the British Library. Staff ensure the files remain usable over time by managing formats and maintaining the storage systems.
 
-4. Access
+4.  Access
 
-Users can search or browse archived versions of websites through the Wayback Machine, which lets users view snapshots from different dates.
+Users can search or browse archived versions of websites through our replay service, which lets users view snapshots from different dates.
 
-5. Legal and permissions
+5.  Legal and permissions
 
 Access depends on copyright and legal deposit rules. Some archived sites are publicly available online, while others can only be viewed in library reading rooms.
 
 ## How big is the archive?
 
-The UK Web Archive collects millions of websites each year and billions of individual assets (pages, images, videos, PDFs, etc.). As of 2026, we have collected approximately 2TB of data, which increases by roughly 100TB each year.
+The UK Web Archive contains millions of websites and billions of files. As of 2026, we have collected approximately 2 PB of data, which increases by roughly 100 TB each year.
 
 ## How are websites selected?
 
-Under the Legal Deposit Libraries (Non-Print Works) Regulations 2013, the six UK Legal Deposit Libraries are entitled to collect and preserve UK-published websites. This broadly includes sites with UK domain names such as `.uk`, `.scot`, `.wales`, `.cymru`, and `.london`, and websites identified as hosted on servers physically located in the UK, for example via geo-IP lookup.
+Under the Legal Deposit Libraries (Non-Print Works) Regulations 2013, the six UK Legal Deposit Libraries are entitled to collect and preserve UK-published websites. This broadly includes sites with UK domain names such as .uk, .scot, .wales, .cymru, and .london, and websites identified as hosted on servers physically located in the UK, for example via geo-IP lookup.
 
 Websites may also be included where there is clear evidence of a UK connection, such as a UK postal address or confirmation that the site owner is based or operates in the UK.
 
@@ -78,8 +89,11 @@ The UK Web Archive is managed by teams across the UK Legal Deposit Libraries, wi
 Alongside large-scale automated collecting under legal deposit, the UK Web Archive also builds specially curated collections. These are focused groups of websites selected around particular themes, events, or topics, for example:
 
 - General elections and political activity
+
 - Cultural events and festivals
+
 - Social issues and community movements
+
 - The COVID-19 pandemic
 
 These curated collections are more selective and interpretive, aiming to capture a well-rounded record of specific moments or aspects of UK life.
@@ -88,7 +102,7 @@ So while much of the web is collected broadly, there is also a significant amoun
 
 ## What is Non-Print Legal Deposit?
 
-The [Legal Deposit Libraries Act 2003](https://www.legislation.gov.uk/ukpga/2003/28/contents) extended legal deposit to include non-print, electronic publications, including websites, subject to further enabling regulations introduced in 2013. Since these regulations came into force, the UK Legal Deposit Libraries have been systematically archiving UK websites.
+The [<u>Legal Deposit Libraries Act 2003</u>](https://www.legislation.gov.uk/ukpga/2003/28/contents) extended legal deposit to include non-print, electronic publications, including websites, subject to further enabling regulations introduced in 2013. Since these regulations came into force, the UK Legal Deposit Libraries have been systematically archiving UK websites.
 
 Most of this material can only be accessed on-site in the reading rooms of the Legal Deposit Libraries. However, where additional permission has been granted by the website publisher, some archived content can be made more widely available online.
 
@@ -96,7 +110,7 @@ Most of this material can only be accessed on-site in the reading rooms of the L
 
 There are several reasons why an archived website may appear incomplete or not function as expected.
 
-In some cases, the website may not yet have been captured by the UK Web Archive, either through automated domain crawls or manual selection. This is more likely for sites without a UK top-level domain, such as `.com` websites. If the website is UK-based and not yet included, you can nominate it for archiving by contacting web-archivist@bl.uk. In other instances, the site may exist within our reading room collections but cannot be made publicly available online without the website publisher's permission.
+In some cases, the website may not yet have been captured by the UK Web Archive, either through automated domain crawls or manual selection. This is more likely for sites without a UK top-level domain, such as .com websites. If the website is UK-based and not yet included, you can nominate it for archiving by contacting [<u>web-archivist@bl.uk</u>](mailto:web-archivist@bl.uk). In other instances, the site may exist within our reading room collections but cannot be made publicly available online without the website publisher's permission.
 
 Websites are archived at a specific point in time using web crawling software, with the aim of capturing as accurately as possible how they appeared and functioned on the live web. This includes collecting associated content such as HTML pages, images, PDFs, audio and video files, and other embedded resources like scripts.
 
