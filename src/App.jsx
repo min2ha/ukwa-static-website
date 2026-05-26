@@ -7,6 +7,7 @@ import ScrollToTop from './components/ScrollToTop';
 import MarkdownPage from './pages/MarkdownPage';
 import InformationIndexPage from './pages/InformationIndexPage';
 import CollectionsPage from './pages/CollectionsPage';
+import SitemapPage from './pages/SitemapPage';
 import { useTheme } from './hooks/useTheme';
 import { languages } from './config/languages';
 
@@ -47,6 +48,7 @@ function App() {
           <Route path="/information/terms" element={<MarkdownPage lang="en" slug="information/terms" theme={theme} parentBreadcrumbs={infoCrumbs(en)} />} />
           <Route path="/information/technical-information" element={<MarkdownPage lang="en" slug="information/technical-information" theme={theme} parentBreadcrumbs={infoCrumbs(en)} />} />
           <Route path="/information/notice-and-takedown" element={<MarkdownPage lang="en" slug="information/notice-and-takedown" theme={theme} parentBreadcrumbs={infoCrumbs(en)} />} />
+          <Route path="/information/sitemap" element={<SitemapPage langCode="en" />} />
 
           {/* Welsh routes */}
           <Route path="/cy" element={<MarkdownPage lang="cy" slug="" theme={theme} />} />
@@ -60,6 +62,7 @@ function App() {
           <Route path="/cy/information/terms" element={<MarkdownPage lang="cy" slug="information/terms" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
           <Route path="/cy/information/technical-information" element={<MarkdownPage lang="cy" slug="information/technical-information" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
           <Route path="/cy/information/notice-and-takedown" element={<MarkdownPage lang="cy" slug="information/notice-and-takedown" theme={theme} parentBreadcrumbs={infoCrumbs(cy)} />} />
+          <Route path="/cy/information/sitemap" element={<SitemapPage langCode="cy" />} />
 
           {/* Gaelic routes */}
           <Route path="/gd" element={<MarkdownPage lang="gd" slug="" theme={theme} />} />
@@ -73,6 +76,7 @@ function App() {
           <Route path="/gd/information/terms" element={<MarkdownPage lang="gd" slug="information/terms" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
           <Route path="/gd/information/technical-information" element={<MarkdownPage lang="gd" slug="information/technical-information" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
           <Route path="/gd/information/notice-and-takedown" element={<MarkdownPage lang="gd" slug="information/notice-and-takedown" theme={theme} parentBreadcrumbs={infoCrumbs(gd)} />} />
+          <Route path="/gd/information/sitemap" element={<SitemapPage langCode="gd" />} />
 
           {/* Fallback */}
           <Route path="*" element={<MarkdownPage lang="en" slug="" theme={theme} />} />
