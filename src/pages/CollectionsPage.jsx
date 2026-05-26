@@ -319,7 +319,7 @@ function CollectionCard({ collection, onClick }) {
             {hasChildren ? `${collection.children.length} sub-collection${collection.children.length !== 1 ? 's' : ''}` : ''}
           </span>
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-accent-primary group-hover:gap-2 transition-all">
-            {hasChildren ? 'Drill in' : 'View'}
+            {'View'}
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
