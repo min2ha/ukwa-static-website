@@ -9,17 +9,12 @@ description: "Terms and conditions for using the UK Web Archive"
 
 The UK Web Archive (UKWA) is operated by the British Library Board, a body corporate established under the British Library Act of 27 July 1972, of 96 Euston Road, London NW1 2DB, United Kingdom, on behalf of all six UK legal deposit libraries:
 
-- [<u>Bodleian Libraries, Oxford</u>](https://www.bodleian.ox.ac.uk/)
-
-- [<u>British Library</u>](https://www.bl.uk/)
-
-- [<u>Cambridge University Libraries</u>](https://www.lib.cam.ac.uk/)
-
-- [<u>National Library of Scotland</u>](https://www.nls.uk/)
-
-- [<u>National Library of Wales</u>](https://www.library.wales/)
-
-- [<u>Trinity College, Dublin</u>](https://www.tcd.ie/)
+- [Bodleian Libraries, Oxford](https://www.bodleian.ox.ac.uk/)
+- [British Library](https://www.bl.uk/)
+- [Cambridge University Libraries](https://www.lib.cam.ac.uk/)
+- [National Library of Scotland](https://www.nls.uk/)
+- [National Library of Wales](https://www.library.wales/)
+- [Trinity College, Dublin](https://www.tcd.ie/)
 
 ## Information about access and use
 
@@ -43,8 +38,8 @@ The inclusion of a website in the archive does not imply endorsement, approval, 
 
 The UK Web Archive is intended for research, education, and cultural preservation. Users are responsible for how they interpret and use archived content, particularly when it may be out of date or no longer reflect current views, services, or information.
 
-Content within the UK Web Archive is protected both by Legal Deposit and Copyright legislation. If you wish to use content from this archive, you must either do so under a relevant exception or obtain explicit permission from the rights holder(s). In most instances, neither the British Library nor the other Legal Deposit Libraries are the rights holder of the archived content and is therefore unable to grant permission to use the material contained within.
+Content within the UK Web Archive is protected both by Legal Deposit and Copyright legislation. If you wish to use content from this archive, you must either do so under a relevant exception or obtain explicit permission from the rights holder(s). In most instances, neither the British Library nor the other Legal Deposit Libraries are the rights holder of the archived content and are therefore unable to grant permission to use the material contained within.
 
 ## Contact
 
-If you have questions about access, rights, or reuse of archived material, please contact us at [<u>web-archivist@bl.uk</u>](mailto:web-archivist@bl.uk).
+If you have questions about access, rights, or reuse of archived material, please contact us at [web-archivist@bl.uk](mailto:web-archivist@bl.uk).

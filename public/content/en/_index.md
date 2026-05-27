@@ -35,6 +35,6 @@ Websites change or are removed over time. Archiving ensures that:
 
 You can contribute by:
 
-- Nominating UK websites for archiving. https://icy-plant-0de1f8103.7.azurestaticapps.net/save-website
+- Nominating UK websites for archiving. Email: web-archivst@bl.uk
 
 - Using the archive for research and education.
