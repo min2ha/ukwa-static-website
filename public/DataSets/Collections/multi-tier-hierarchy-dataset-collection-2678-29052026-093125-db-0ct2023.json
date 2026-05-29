@@ -1,0 +1,222 @@
+{
+    "Collection ID": 2678,
+    "Collection or Subsection Name": "Intellectual Property Decision Transcripts",
+    "Higher Level Collection": 2678,
+    "Main Collection or Subsection": "Main Collection",
+    "subsections": [
+        {
+            "Collection ID": 2679,
+            "Collection or Subsection Name": "Patent decisions",
+            "Main Collection or Subsection": "Subsection",
+            "subsections": [],
+            "targets": [
+                {
+                    "Crawl End Date": null,
+                    "Crawl Frequency": "QUARTERLY",
+                    "Crawl Start Date": "2019-06-07 09:00:00",
+                    "Date Created": "2019-06-06 10:31:15.814000",
+                    "Depth": "CAPPED",
+                    "Description": "Patent decisions issued the UK IPO before 1998.",
+                    "Institution ID": 1,
+                    "LD Criteria": "false",
+                    "Language": "EN",
+                    "Licence Status": null,
+                    "Primary Seed": "https://www.gov.uk/government/collections/results-of-past-patent-decisions-issued-before-1998",
+                    "Record ID": 93082,
+                    "Robots.txt": null,
+                    "Scope": "root",
+                    "Title of Target": "Pre-1998 patent decisions",
+                    "Updated": "2019-08-09 16:04:08.554000"
+                },
+                {
+                    "Crawl End Date": null,
+                    "Crawl Frequency": "QUARTERLY",
+                    "Crawl Start Date": "2019-06-18 09:00:00",
+                    "Date Created": "2019-06-17 15:55:23.474000",
+                    "Depth": "CAPPED",
+                    "Description": "Patent decisions issued by the UK IPO since 1998.",
+                    "Institution ID": 1,
+                    "LD Criteria": "false",
+                    "Language": "EN",
+                    "Licence Status": null,
+                    "Primary Seed": "https://www.ipo.gov.uk/p-challenge-decision-results.htm",
+                    "Record ID": 93746,
+                    "Robots.txt": null,
+                    "Scope": "root",
+                    "Title of Target": "Patent decisions",
+                    "Updated": "2020-01-09 15:37:51.917000"
+                }
+            ]
+        },
+        {
+            "Collection ID": 2680,
+            "Collection or Subsection Name": "Trade mark decisions",
+            "Main Collection or Subsection": "Subsection",
+            "subsections": [],
+            "targets": [
+                {
+                    "Crawl End Date": null,
+                    "Crawl Frequency": "QUARTERLY",
+                    "Crawl Start Date": "2019-06-18 09:00:00",
+                    "Date Created": "2019-06-17 15:31:29.235000",
+                    "Depth": "CAPPED",
+                    "Description": "Trade mark decisions issued by the UK IPO and the appointed person since the beginning of 1998.",
+                    "Institution ID": 1,
+                    "LD Criteria": "false",
+                    "Language": "EN",
+                    "Licence Status": null,
+                    "Primary Seed": "https://www.ipo.gov.uk/t-challenge-decision-results.htm",
+                    "Record ID": 93744,
+                    "Robots.txt": null,
+                    "Scope": "root",
+                    "Title of Target": "Trade mark decisions",
+                    "Updated": "2019-06-17 15:31:29.235000"
+                }
+            ]
+        },
+        {
+            "Collection ID": 2681,
+            "Collection or Subsection Name": "Designs decisions",
+            "Main Collection or Subsection": "Subsection",
+            "subsections": [],
+            "targets": [
+                {
+                    "Crawl End Date": null,
+                    "Crawl Frequency": "QUARTERLY",
+                    "Crawl Start Date": "2019-06-18 09:00:00",
+                    "Date Created": "2019-06-17 15:42:40.894000",
+                    "Depth": "CAPPED",
+                    "Description": "Results of past design and design right decisions issued by the UK IPO since 2013",
+                    "Institution ID": 1,
+                    "LD Criteria": "false",
+                    "Language": "EN",
+                    "Licence Status": null,
+                    "Primary Seed": "https://www.gov.uk/government/collections/designs-decisions",
+                    "Record ID": 93745,
+                    "Robots.txt": null,
+                    "Scope": "root",
+                    "Title of Target": "Designs decisions",
+                    "Updated": "2019-06-17 15:42:40.894000"
+                }
+            ]
+        },
+        {
+            "Collection ID": 2682,
+            "Collection or Subsection Name": "Company Names Tribunal",
+            "Main Collection or Subsection": "Subsection",
+            "subsections": [],
+            "targets": [
+                {
+                    "Crawl End Date": null,
+                    "Crawl Frequency": "QUARTERLY",
+                    "Crawl Start Date": "2019-06-18 09:00:00",
+                    "Date Created": "2019-06-17 16:05:06.097000",
+                    "Depth": "CAPPED",
+                    "Description": "The Company Names Tribunal deals with complaints about cases where a company name is registered for the primary purpose of preventing someone else with legitimate interest from registering it, or demanding payment from them to release it",
+                    "Institution ID": 1,
+                    "LD Criteria": "false",
+                    "Language": "EN",
+                    "Licence Status": null,
+                    "Primary Seed": "https://www.gov.uk/government/organisations/company-names-tribunal",
+                    "Record ID": 93747,
+                    "Robots.txt": null,
+                    "Scope": "root",
+                    "Title of Target": "Company Names Tribunal",
+                    "Updated": "2019-06-17 16:05:06.097000"
+                }
+            ]
+        }
+    ],
+    "targets": [
+        {
+            "Crawl End Date": null,
+            "Crawl Frequency": "QUARTERLY",
+            "Crawl Start Date": "2019-06-07 09:00:00",
+            "Date Created": "2019-06-06 10:31:15.814000",
+            "Depth": "CAPPED",
+            "Description": "Patent decisions issued the UK IPO before 1998.",
+            "Institution ID": 1,
+            "LD Criteria": "false",
+            "Language": "EN",
+            "Licence Status": null,
+            "Primary Seed": "https://www.gov.uk/government/collections/results-of-past-patent-decisions-issued-before-1998",
+            "Record ID": 93082,
+            "Robots.txt": null,
+            "Scope": "root",
+            "Title of Target": "Pre-1998 patent decisions",
+            "Updated": "2019-08-09 16:04:08.554000"
+        },
+        {
+            "Crawl End Date": null,
+            "Crawl Frequency": "QUARTERLY",
+            "Crawl Start Date": "2019-06-18 09:00:00",
+            "Date Created": "2019-06-17 15:31:29.235000",
+            "Depth": "CAPPED",
+            "Description": "Trade mark decisions issued by the UK IPO and the appointed person since the beginning of 1998.",
+            "Institution ID": 1,
+            "LD Criteria": "false",
+            "Language": "EN",
+            "Licence Status": null,
+            "Primary Seed": "https://www.ipo.gov.uk/t-challenge-decision-results.htm",
+            "Record ID": 93744,
+            "Robots.txt": null,
+            "Scope": "root",
+            "Title of Target": "Trade mark decisions",
+            "Updated": "2019-06-17 15:31:29.235000"
+        },
+        {
+            "Crawl End Date": null,
+            "Crawl Frequency": "QUARTERLY",
+            "Crawl Start Date": "2019-06-18 09:00:00",
+            "Date Created": "2019-06-17 15:42:40.894000",
+            "Depth": "CAPPED",
+            "Description": "Results of past design and design right decisions issued by the UK IPO since 2013",
+            "Institution ID": 1,
+            "LD Criteria": "false",
+            "Language": "EN",
+            "Licence Status": null,
+            "Primary Seed": "https://www.gov.uk/government/collections/designs-decisions",
+            "Record ID": 93745,
+            "Robots.txt": null,
+            "Scope": "root",
+            "Title of Target": "Designs decisions",
+            "Updated": "2019-06-17 15:42:40.894000"
+        },
+        {
+            "Crawl End Date": null,
+            "Crawl Frequency": "QUARTERLY",
+            "Crawl Start Date": "2019-06-18 09:00:00",
+            "Date Created": "2019-06-17 15:55:23.474000",
+            "Depth": "CAPPED",
+            "Description": "Patent decisions issued by the UK IPO since 1998.",
+            "Institution ID": 1,
+            "LD Criteria": "false",
+            "Language": "EN",
+            "Licence Status": null,
+            "Primary Seed": "https://www.ipo.gov.uk/p-challenge-decision-results.htm",
+            "Record ID": 93746,
+            "Robots.txt": null,
+            "Scope": "root",
+            "Title of Target": "Patent decisions",
+            "Updated": "2020-01-09 15:37:51.917000"
+        },
+        {
+            "Crawl End Date": null,
+            "Crawl Frequency": "QUARTERLY",
+            "Crawl Start Date": "2019-06-18 09:00:00",
+            "Date Created": "2019-06-17 16:05:06.097000",
+            "Depth": "CAPPED",
+            "Description": "The Company Names Tribunal deals with complaints about cases where a company name is registered for the primary purpose of preventing someone else with legitimate interest from registering it, or demanding payment from them to release it",
+            "Institution ID": 1,
+            "LD Criteria": "false",
+            "Language": "EN",
+            "Licence Status": null,
+            "Primary Seed": "https://www.gov.uk/government/organisations/company-names-tribunal",
+            "Record ID": 93747,
+            "Robots.txt": null,
+            "Scope": "root",
+            "Title of Target": "Company Names Tribunal",
+            "Updated": "2019-06-17 16:05:06.097000"
+        }
+    ]
+}

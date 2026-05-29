@@ -198,10 +198,41 @@ function summariseCollection(c) {
   };
 }
 
+// Flatten the newer nested format (single root object with subsections/targets)
+// into the flat array that buildCollectionMap expects, merging each node's
+// collection metadata into every target under that node.
+//
+// In the nested format, parentage is encoded by nesting rather than a
+// "Higher Level Collection" field: subsection nodes carry no such field.
+// We therefore derive each node's higher-level collection from the ID of the
+// node it is nested under (`parentId`), falling back to the node's own field
+// when present (so the self-referential root keeps pointing at itself).
+// Without this, subsections flatten with an undefined parent and get dropped
+// from the hierarchy in buildCollectionMap.
+function flattenNewFormat(node, items = [], parentId = null) {
+  const id = node['Collection ID'];
+  const ownHigher = node['Higher Level Collection'];
+  const higherLevel = ownHigher != null ? ownHigher
+    : (parentId != null ? parentId : id);
+  const meta = {
+    'Collection ID': id,
+    'Collection or Subsection Name': node['Collection or Subsection Name'],
+    'Higher Level Collection': higherLevel,
+    'Main Collection or Subsection': node['Main Collection or Subsection'],
+  };
+  for (const target of (node.targets || [])) {
+    items.push({ ...meta, ...target });
+  }
+  for (const sub of (node.subsections || [])) {
+    flattenNewFormat(sub, items, id);
+  }
+  return items;
+}
+
 function processSource(filepath) {
   const filename = basename(filepath);
-  const items = JSON.parse(readFileSync(filepath, 'utf8'));
-  if (!Array.isArray(items)) throw new Error(`${filename} is not a JSON array`);
+  const raw = JSON.parse(readFileSync(filepath, 'utf8'));
+  const items = Array.isArray(raw) ? raw : flattenNewFormat(raw);
 
   const map = buildCollectionMap(items);
   const root = findRoot(map);
