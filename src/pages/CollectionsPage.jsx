@@ -5,6 +5,64 @@ import { useCollectionData } from '../hooks/useCollectionData';
 
 const ITEMS_PER_PAGE = 15;
 
+// ─── Collections intro blurb (collapsed to ~5 lines with "View more") ────────
+
+function CollectionsIntro() {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="mt-4 mb-2 max-w-3xl">
+      <div
+        className={`text-sm text-gray-600 dark:text-dark-400 leading-relaxed overflow-hidden transition-all duration-300 ${expanded ? '' : 'line-clamp-5'}`}
+      >
+        <p className="mb-2">
+          The archived websites included in these collections were captured between 2005 and 2023
+          inclusive. At present, the collections are static, although more recently archived
+          websites and new collections will be added over time.
+        </p>
+        <p className="mb-2">
+          The UK Web Archive curates many different types of special collections, covering a wide
+          range of topics and themes reflecting contemporary life in the UK.
+        </p>
+        <p className="mb-2">
+          Collections are created by a wide range of contributors, including subject specialists
+          and curators across the UK legal deposit libraries, cultural heritage organisations,
+          research institutions, community groups, and individuals. Members of the public can also
+          nominate websites for inclusion by emailing{' '}
+          <a href="mailto:web-archivist@bl.uk" className="text-accent-primary hover:underline">
+            web-archivist@bl.uk
+          </a>
+          .
+        </p>
+        <p className="mb-2">
+          No collection can ever be fully comprehensive. Selecting websites for inclusion is a
+          manual process, and some websites cannot be archived because of technical limitations or
+          because they fall outside the collection&apos;s scope and selection criteria.
+        </p>
+        <p>
+          For more information about individual collections, including their scope and collecting
+          priorities, see the collection scoping documents available through the{' '}
+          <a
+            href="https://bl.iro.bl.uk/collections/d09fbc16-7a76-49db-a45f-16a99c30ae3e"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent-primary hover:underline"
+          >
+            British Library research repository
+          </a>
+          .
+        </p>
+      </div>
+      <button
+        onClick={() => setExpanded(v => !v)}
+        className="mt-1 text-xs font-medium text-accent-primary hover:underline focus:outline-none"
+      >
+        {expanded ? 'View less' : 'View more'}
+      </button>
+    </div>
+  );
+}
+
 // ─── Badge colour maps ────────────────────────────────────────────────────────
 
 const DEPTH_COLOURS = {
@@ -546,6 +604,7 @@ export default function CollectionsPage() {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-dark-100 leading-tight">
               Collections and Themes
             </h1>
+            <CollectionsIntro />
             <p className="mt-2 text-sm md:text-base text-gray-500 dark:text-dark-400 max-w-2xl">
               Browse curated themes below, or search instantly across every collection,
               subsection and archived website.

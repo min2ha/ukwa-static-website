@@ -425,8 +425,7 @@ export default function SitemapPage({ langCode = 'en' }) {
           </div>
 
           {/* Stats */}
-          <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
-            <Stat value={pageTotal} label={t.statPages} />
+          <div className="mt-6 grid grid-cols-3 gap-3 max-w-3xl">
             <Stat
               value={manifest?.summary?.totalCollections?.toLocaleString?.() ?? '—'}
               label={t.statCollections}
