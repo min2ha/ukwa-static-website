@@ -293,8 +293,7 @@ function DatasetCard({ dataset, onClick }) {
 
         {/* Top chips */}
         <div className="absolute top-4 left-4 right-4 flex items-start justify-between gap-2">
-          <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-full pl-2 pr-3 py-1 text-[11px] text-white font-semibold border border-white/20 uppercase tracking-wider">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+          <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-full px-3 py-1 text-[11px] text-white font-semibold border border-white/20 uppercase tracking-wider">
             Collection
           </div>
           <span className="inline-flex items-center bg-black/45 backdrop-blur-md rounded-md px-2 py-1 text-[11px] text-white/95 font-mono tabular-nums">
