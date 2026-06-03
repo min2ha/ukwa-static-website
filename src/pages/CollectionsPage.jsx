@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import PageInfoStripe from '../components/PageInfoStripe';
 import CollectionsSearch from '../components/CollectionsSearch';
 import { useCollectionData } from '../hooks/useCollectionData';
@@ -230,11 +231,12 @@ function StatPill({ value, label, accent = 'default' }) {
     default: 'text-gray-900 dark:text-dark-100',
     success: 'text-emerald-600 dark:text-emerald-400',
     info: 'text-blue-600 dark:text-blue-400',
+    target: 'text-blue-600 dark:text-white',
   };
   return (
     <div>
-      <div className={`text-xl font-bold tracking-tight ${accents[accent]}`}>{value}</div>
-      <div className="text-[10px] uppercase tracking-[0.08em] text-gray-400 dark:text-dark-500 font-semibold mt-0.5">
+      <div className={`text-lg font-bold tracking-tight ${accents[accent]}`}>{value}</div>
+      <div className="text-[9px] uppercase tracking-[0.08em] text-gray-400 dark:text-dark-500 font-semibold mt-0.5">
         {label}
       </div>
     </div>
@@ -331,6 +333,15 @@ function DatasetCard({ dataset, onClick }) {
 
 // ─── Sub-collection card ──────────────────────────────────────────────────────
 
+function FolderGlyph({ className }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+        d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+    </svg>
+  );
+}
+
 function CollectionCard({ collection, onClick }) {
   const childCount = collection.children?.length ?? 0;
   const hasChildren = childCount > 0;
@@ -339,47 +350,40 @@ function CollectionCard({ collection, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="group relative text-left w-full flex items-center gap-3 bg-white dark:bg-dark-800 rounded-xl border border-gray-200/80 dark:border-dark-700 shadow-sm hover:shadow-md hover:border-accent-primary/40 dark:hover:border-accent-primary/40 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-1 px-4 py-3"
+      className="group relative text-left w-full flex flex-col gap-2.5 bg-white dark:bg-dark-800 rounded-xl border border-gray-200/70 dark:border-dark-700 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-accent-primary/40 dark:hover:border-accent-primary/40 transition-all duration-200 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 p-3.5"
     >
-      {/* Accent rail */}
-      <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-accent-primary/70 to-accent-secondary/70 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-      {/* Folder glyph */}
-      <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-primary/10 dark:bg-accent-primary/15 text-accent-primary shrink-0">
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-        </svg>
-      </span>
-
-      {/* Title + meta */}
-      <span className="flex-1 min-w-0">
-        <span className="block text-sm font-semibold text-gray-900 dark:text-dark-100 leading-snug truncate">
+      {/* Title row: folder glyph + name + id */}
+      <div className="flex items-start gap-2.5">
+        <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-accent-primary/10 dark:bg-accent-primary/15 text-accent-primary shrink-0">
+          <FolderGlyph className="w-4 h-4" />
+        </span>
+        <h3 className="flex-1 min-w-0 text-sm font-bold leading-snug text-gray-900 dark:text-dark-100 line-clamp-2">
           {collection.name}
+        </h3>
+        <span className="shrink-0 text-[10px] font-mono tabular-nums text-gray-400 dark:text-dark-500 mt-0.5">
+          #{collection.id}
         </span>
-        <span className="mt-0.5 flex items-center gap-2 text-[11px] text-gray-500 dark:text-dark-400">
-          <span className="font-mono tabular-nums text-gray-400 dark:text-dark-500">#{collection.id}</span>
-          {hasChildren && (
-            <>
-              <span aria-hidden className="text-gray-300 dark:text-dark-600">·</span>
-              <span>{childCount} subsection{childCount !== 1 ? 's' : ''}</span>
-            </>
-          )}
-          {itemCount > 0 && (
-            <>
-              <span aria-hidden className="text-gray-300 dark:text-dark-600">·</span>
-              <span>{itemCount.toLocaleString()} target{itemCount === 1 ? '' : 's'}</span>
-            </>
-          )}
-        </span>
-      </span>
+      </div>
 
-      {/* Chevron */}
-      <span className="inline-flex items-center justify-center w-7 h-7 rounded-md text-gray-400 dark:text-dark-500 group-hover:text-accent-primary group-hover:bg-accent-primary/10 transition-colors shrink-0">
-        <svg className="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </span>
+      {/* Stats */}
+      <div className="mt-auto flex items-center gap-4">
+        {hasChildren && (
+          <StatPill value={childCount} label={`subsection${childCount !== 1 ? 's' : ''}`} accent="info" />
+        )}
+        {itemCount > 0 && (
+          <StatPill value={itemCount.toLocaleString()} label={`target${itemCount === 1 ? '' : 's'}`} accent="target" />
+        )}
+      </div>
+
+      {/* View affordance */}
+      <div className="flex items-center pt-2 border-t border-gray-100 dark:border-dark-700">
+        <span className="ml-auto inline-flex items-center gap-1 text-[13px] font-semibold text-accent-primary group-hover:gap-2 transition-all">
+          {hasChildren ? 'Browse' : 'View targets'}
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
+      </div>
     </button>
   );
 }
@@ -478,6 +482,17 @@ export default function CollectionsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [items, setItems] = useState(null);
+
+  // The in-page tree position lives in component state, not the URL, so when the
+  // user re-clicks the "Collections and Themes" header link while already on
+  // this route (same path → no remount) we must reset to the top level
+  // ourselves. location.key changes on every navigation, including a re-click.
+  const location = useLocation();
+  useEffect(() => {
+    setPath([]);
+    setPage(1);
+    setSearch('');
+  }, [location.key]);
 
   const currentId = path[path.length - 1] ?? null;
   const current = currentId != null ? getCollection(currentId) : null;
@@ -670,7 +685,7 @@ export default function CollectionsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {paginated.map(c => <CollectionCard key={c.id} collection={c} onClick={() => navigateTo(c.id)} />)}
           </div>
           <Pagination page={page} totalPages={totalPages} onPage={handlePageChange} />
