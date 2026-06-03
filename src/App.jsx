@@ -41,6 +41,7 @@ function App() {
           <Route path="/" element={<MarkdownPage lang="en" slug="" theme={theme} />} />
           <Route path="/themes" element={<MarkdownPage lang="en" slug="themes" theme={theme} />} />
           <Route path="/themes/collections" element={<CollectionsPage />} />
+          <Route path="/themes/collections/:collectionId" element={<CollectionsPage />} />
           <Route path="/save-website" element={<MarkdownPage lang="en" slug="save-website" theme={theme} />} />
           <Route path="/contact" element={<MarkdownPage lang="en" slug="contact" theme={theme} />} />
 

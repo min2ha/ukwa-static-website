@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import PageInfoStripe from '../components/PageInfoStripe';
 import CollectionsSearch from '../components/CollectionsSearch';
 import { useCollectionData } from '../hooks/useCollectionData';
 
 const ITEMS_PER_PAGE = 15;
+const COLLECTIONS_BASE = '/themes/collections';
 
 // ─── Collections intro blurb (collapsed to ~5 lines with "View more") ────────
 
@@ -477,22 +478,41 @@ export default function CollectionsPage() {
     loadSearchIndex, searchIndex, loadingSearchIndex,
   } = useCollectionData();
 
-  // Navigation: stack of collection IDs from root → current.
-  const [path, setPath] = useState([]);
+  const navigate = useNavigate();
+  const { collectionId } = useParams();
+
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [items, setItems] = useState(null);
 
-  // The in-page tree position lives in component state, not the URL, so when the
-  // user re-clicks the "Collections and Themes" header link while already on
-  // this route (same path → no remount) we must reset to the top level
-  // ourselves. location.key changes on every navigation, including a re-click.
-  const location = useLocation();
+  // Search term to apply on the *next* collection we land on. Used by the
+  // "jump to target" autocomplete action, which navigates to a leaf and
+  // pre-filters it by the chosen target's title. Held in a ref so it survives
+  // the route change without having to live in the URL.
+  const pendingSearchRef = useRef('');
+
+  // The visible tree position is derived entirely from the URL param. A single
+  // collection id is enough because getAncestors() rebuilds the full
+  // root → … → current chain. `manifest` is a dep because getCollection /
+  // getAncestors read a ref that's only populated once the manifest loads, so a
+  // direct deep-link recomputes the path as soon as the data arrives.
+  const path = useMemo(() => {
+    if (collectionId == null) return [];
+    const id = Number(collectionId);
+    if (Number.isNaN(id) || !getCollection(id)) return [];
+    return [...getAncestors(id).map(a => a.id), id];
+    // `manifest` is intentional: getCollection/getAncestors read a ref that is
+    // only filled once the manifest loads, so a deep-link must re-derive then.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collectionId, getCollection, getAncestors, manifest]);
+
+  // Reset transient view state whenever the target collection changes, applying
+  // any pending pre-filter handed over by a "jump to target" action.
   useEffect(() => {
-    setPath([]);
     setPage(1);
-    setSearch('');
-  }, [location.key]);
+    setSearch(pendingSearchRef.current);
+    pendingSearchRef.current = '';
+  }, [collectionId]);
 
   const currentId = path[path.length - 1] ?? null;
   const current = currentId != null ? getCollection(currentId) : null;
@@ -511,49 +531,38 @@ export default function CollectionsPage() {
     setItems(null);
   }, [currentId, isLeaf, loadCollectionItems]);
 
-  const navigateTo = useCallback((id) => {
-    setPath(prev => [...prev, id]);
-    setPage(1);
-    setSearch('');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  // All in-tree navigation flows through the URL: /themes/collections/{id}
+  // (or the bare base for the top-level index). Drilling in, breadcrumb jumps
+  // and back all just change the route; `path` re-derives from the new param,
+  // and ScrollToTop resets scroll on the route change.
+  const goTo = useCallback((id) => {
+    navigate(id == null ? COLLECTIONS_BASE : `${COLLECTIONS_BASE}/${id}`);
+  }, [navigate]);
+
+  const navigateTo = goTo;
 
   const navigateBack = useCallback(() => {
-    setPath(prev => prev.slice(0, -1));
-    setPage(1);
-    setSearch('');
-  }, []);
+    goTo(path.length >= 2 ? path[path.length - 2] : null);
+  }, [goTo, path]);
 
   const navigateToIndex = useCallback((idx) => {
-    setPath(prev => prev.slice(0, idx + 1));
-    setPage(1);
-    setSearch('');
-  }, []);
+    goTo(path[idx] ?? null);
+  }, [goTo, path]);
 
-  // Jump to any collection (anywhere in the tree) by rebuilding the full
-  // root → ... → target path. Used by the autocomplete to land the user
-  // wherever they picked, breadcrumb intact.
+  // Jump to any collection (anywhere in the tree). getAncestors rebuilds the
+  // breadcrumb from the id, so we only need to push the id into the URL.
   const navigateToCollection = useCallback((id) => {
     if (id == null) return;
-    const ancestors = getAncestors(id);
-    const fullPath = [...ancestors.map(a => a.id), Number(id)];
-    setPath(fullPath);
-    setPage(1);
-    setSearch('');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [getAncestors]);
+    goTo(Number(id));
+  }, [goTo]);
 
   // Jump to a target's parent collection and pre-filter the leaf view by its
   // title so the chosen result is the (typically only) card on screen.
   const navigateToTarget = useCallback((target) => {
     if (!target) return;
-    const ancestors = getAncestors(target.collectionId);
-    const fullPath = [...ancestors.map(a => a.id), Number(target.collectionId)];
-    setPath(fullPath);
-    setPage(1);
-    setSearch(target.title ?? '');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [getAncestors]);
+    pendingSearchRef.current = target.title ?? '';
+    goTo(Number(target.collectionId));
+  }, [goTo]);
 
   const handlePageChange = useCallback((p) => {
     setPage(p);
@@ -565,7 +574,7 @@ export default function CollectionsPage() {
     const base = [
       { label: 'Home', path: '/' },
       { label: 'Themes', path: '/themes' },
-      { label: 'Collections', onClick: path.length > 0 ? () => setPath([]) : undefined },
+      { label: 'Collections', onClick: path.length > 0 ? () => goTo(null) : undefined },
     ];
     path.forEach((id, i) => {
       const c = getCollection(id);
