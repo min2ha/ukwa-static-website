@@ -11,7 +11,7 @@ function CollectionsIntro() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="mt-4 mb-2 max-w-3xl">
+    <div className="mt-4 mb-2">
       <div
         className={`text-sm text-gray-600 dark:text-dark-400 leading-relaxed overflow-hidden transition-all duration-300 ${expanded ? '' : 'line-clamp-5'}`}
       >
@@ -604,7 +604,7 @@ export default function CollectionsPage() {
               Collections and Themes
             </h1>
             <CollectionsIntro />
-            <p className="mt-2 text-sm md:text-base text-gray-500 dark:text-dark-400 max-w-2xl">
+            <p className="mt-2 text-sm md:text-base text-gray-500 dark:text-dark-400">
               Browse curated themes below, or search instantly across every collection,
               subsection and archived website.
             </p>
