@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/images/logo/ukwa-2018-dark.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UK Web Archive</title>
+    <!--
+      Apply saved theme + accessibility preferences before first paint so the
+      page never flashes the wrong colours or size. Mirrors useTheme.js and
+      useAccessibility.js — keep the cookie keys and class names in sync.
+    -->
+    <script>
+      (function () {
+        try {
+          var root = document.documentElement;
+          function readCookie(name) {
+            var m = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
+            return m ? decodeURIComponent(m[1]) : null;
+          }
+          function legacy(key) {
+            try { return localStorage.getItem(key); } catch (e) { return null; }
+          }
+
+          // Theme: cookie → legacy localStorage → OS preference → light.
+          var theme = readCookie('ukwa-theme') || legacy('ukwa-theme');
+          if (theme !== 'light' && theme !== 'dark') {
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+              ? 'dark' : 'light';
+          }
+          if (theme === 'dark') root.classList.add('dark');
+
+          // Accessibility preferences.
+          var a11y = {};
+          try { a11y = JSON.parse(readCookie('ukwa-a11y') || '{}') || {}; } catch (e) { a11y = {}; }
+          if (a11y.fontScale && a11y.fontScale !== 'normal') {
+            root.setAttribute('data-font-scale', a11y.fontScale);
+          }
+          if (a11y.contrast === 'high') root.classList.add('hc');
+          if (a11y.underlineLinks) root.classList.add('underline-links');
+          if (a11y.reduceMotion) root.classList.add('reduce-motion');
+        } catch (e) { /* fail open — defaults apply */ }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -267,7 +267,7 @@ export default function CollectionsSearch({
           role="combobox"
           autoComplete="off"
           spellCheck="false"
-          className="w-full pl-12 pr-12 py-3.5 rounded-2xl border border-gray-200 dark:border-dark-700 bg-white dark:bg-dark-800 text-gray-900 dark:text-dark-100 placeholder-gray-400 dark:placeholder-dark-500 text-[15px] shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-shadow"
+          className="w-full pl-12 pr-12 py-3.5 rounded-2xl border border-gray-200 dark:border-dark-700 bg-white dark:bg-dark-800 text-gray-900 dark:text-dark-100 placeholder-gray-500 dark:placeholder-dark-400 text-[15px] shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-shadow"
         />
         {/* `/` hint or clear button */}
         {query ? (

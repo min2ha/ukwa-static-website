@@ -10,6 +10,7 @@ import InformationIndexPage from './pages/InformationIndexPage';
 import CollectionsPage from './pages/CollectionsPage';
 import SitemapPage from './pages/SitemapPage';
 import { useTheme } from './hooks/useTheme';
+import { useAccessibility } from './hooks/useAccessibility';
 import { useCookieConsent } from './hooks/useCookieConsent';
 import { languages } from './config/languages';
 
@@ -21,7 +22,8 @@ function infoCrumbs(lang) {
 }
 
 function App() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, setTheme } = useTheme();
+  const a11y = useAccessibility();
   const cookies = useCookieConsent();
   const en = languages.en;
   const cy = languages.cy;
@@ -29,10 +31,11 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-dark-950">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <ScrollToTop />
-      <Header theme={theme} onToggleTheme={toggleTheme} />
+      <Header theme={theme} onToggleTheme={toggleTheme} onSetTheme={setTheme} a11y={a11y} />
 
-      <div className="flex-1">
+      <div id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
         <Routes>
           {/* English routes */}
           <Route path="/" element={<MarkdownPage lang="en" slug="" theme={theme} />} />

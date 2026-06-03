@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import LanguageSwitcher from './LanguageSwitcher';
 import MobileMenu from './MobileMenu';
 import ThemeToggle from './ThemeToggle';
+import AccessibilityPanel from './AccessibilityPanel';
+
+const A11Y_PANEL_ID = 'accessibility-panel';
 
 function MenuIcon() {
   return (
@@ -24,12 +27,23 @@ function CloseIcon() {
   );
 }
 
-function AccessibilityButton() {
+const AccessibilityButton = forwardRef(function AccessibilityButton(
+  { open, onClick },
+  ref
+) {
   return (
     <button
-      className="p-2 rounded-full border border-dark-600 text-dark-300 hover:bg-dark-700 hover:text-dark-100 bg-transparent transition-colors"
-      aria-label="Accessibility options"
-      title="Accessibility options"
+      ref={ref}
+      type="button"
+      onClick={onClick}
+      aria-label="Accessibility settings"
+      title="Accessibility settings"
+      aria-haspopup="dialog"
+      aria-expanded={open}
+      aria-controls={A11Y_PANEL_ID}
+      className={`p-2 rounded-full border text-dark-300 hover:bg-dark-700 hover:text-dark-100 bg-transparent transition-colors ${
+        open ? 'border-accent-primary text-dark-100 bg-dark-700' : 'border-dark-600'
+      }`}
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="4" r="1.5" />
@@ -40,11 +54,25 @@ function AccessibilityButton() {
       </svg>
     </button>
   );
-}
+});
 
-export default function Header({ theme, onToggleTheme }) {
+export default function Header({ theme, onToggleTheme, onSetTheme, a11y }) {
   const lang = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [a11yOpen, setA11yOpen] = useState(false);
+  // The button that opened the panel — focus returns here when it closes.
+  const a11yTriggerRef = useRef(null);
+  const desktopA11yRef = useRef(null);
+  const mobileA11yRef = useRef(null);
+
+  const openA11y = (triggerRef) => {
+    a11yTriggerRef.current = triggerRef.current;
+    setA11yOpen(true);
+  };
+  const toggleA11y = (triggerRef) => {
+    if (a11yOpen) setA11yOpen(false);
+    else openA11y(triggerRef);
+  };
 
   return (
     <header className="sticky top-0 z-50">
@@ -87,13 +115,21 @@ export default function Header({ theme, onToggleTheme }) {
             <div className="hidden md:flex items-center gap-3 flex-shrink-0">
               <LanguageSwitcher />
               <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-              <AccessibilityButton />
+              <AccessibilityButton
+                ref={desktopA11yRef}
+                open={a11yOpen}
+                onClick={() => toggleA11y(desktopA11yRef)}
+              />
             </div>
 
             {/* Mobile: Theme Toggle + Accessibility + Hamburger */}
             <div className="md:hidden flex items-center gap-2">
               <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-              <AccessibilityButton />
+              <AccessibilityButton
+                ref={mobileA11yRef}
+                open={a11yOpen}
+                onClick={() => toggleA11y(mobileA11yRef)}
+              />
               <button
                 className="p-2 text-dark-300 hover:text-dark-100 transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -109,6 +145,21 @@ export default function Header({ theme, onToggleTheme }) {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <MobileMenu lang={lang} onClose={() => setMobileMenuOpen(false)} />
+      )}
+
+      {/* Accessibility settings panel */}
+      {a11y && (
+        <AccessibilityPanel
+          id={A11Y_PANEL_ID}
+          open={a11yOpen}
+          onClose={() => setA11yOpen(false)}
+          returnFocusRef={a11yTriggerRef}
+          theme={theme}
+          onSetTheme={onSetTheme}
+          prefs={a11y.prefs}
+          onUpdate={a11y.update}
+          onReset={a11y.reset}
+        />
       )}
     </header>
   );

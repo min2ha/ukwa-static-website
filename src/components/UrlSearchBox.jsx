@@ -66,8 +66,8 @@ export default function UrlSearchBox({ theme }) {
           style={inputResetStyle}
           className={`flex-1 min-w-0 w-full px-4 py-2.5 rounded-lg border text-sm leading-normal transition-colors ${
             isDark
-              ? 'border-dark-600 bg-dark-800 text-dark-100 placeholder-dark-500 focus:border-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary/30'
-              : 'border-blue-300 bg-white text-gray-800 placeholder-gray-400 focus:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300/50'
+              ? 'border-dark-600 bg-dark-800 text-dark-100 placeholder-dark-400 focus:border-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary/30'
+              : 'border-blue-300 bg-white text-gray-800 placeholder-gray-500 focus:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300/50'
           }`}
         />
         <button

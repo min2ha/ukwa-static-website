@@ -161,3 +161,110 @@
     border-radius: 3px;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   Accessibility preferences (WCAG 2.1)
+
+   Driven by classes / data-attributes set on <html> by useAccessibility.js and
+   the pre-paint inline script in index.html. Tailwind sizes are rem-based, so
+   scaling the root font size resizes the whole UI proportionally.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1.4.4 Resize text — discrete text-size steps ───────────────────────────── */
+:root[data-font-scale="large"]  { font-size: 112.5%; } /* ~18px */
+:root[data-font-scale="larger"] { font-size: 125%;   } /* ~20px */
+
+/* ── 2.4.7 Focus Visible — a strong, consistent keyboard focus indicator ────── */
+:where(a, button, input, select, textarea, [role="radio"], [role="switch"], [tabindex]):focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.dark :where(a, button, input, select, textarea, [role="radio"], [role="switch"], [tabindex]):focus-visible {
+  outline-color: #93c5fd;
+}
+
+/* ── 2.4.1 Bypass Blocks — skip to main content link ────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  transform: translateY(-150%);
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  background: #1d4ed8;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ── 1.4.1 Use of Color — underline links within content ────────────────────── */
+:root.underline-links main a,
+:root.underline-links .prose-light a,
+:root.underline-links .prose-dark a {
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+/* ── 2.3.3 Animation from Interactions — user-requested reduced motion ───────── */
+:root.reduce-motion *,
+:root.reduce-motion *::before,
+:root.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Honour an OS-level reduced-motion setting as well. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── 1.4.3 / 1.4.6 Contrast — "Higher contrast" mode ────────────────────────────
+   Targets the low-contrast muted greys used for secondary text (the usual
+   contrast failure for low-vision users) and strengthens borders + focus,
+   without inverting the white-on-colour banners that already pass.
+
+   Attribute selectors ([class~="…"]) are used instead of bare class selectors
+   so these rules don't collide with the `@apply`-ed utilities in the prose
+   blocks above (which would create a circular dependency), and so the `dark:`
+   variant classes can be matched directly. */
+:root.hc [class~="text-gray-400"] { color: #4b5563 !important; }
+:root.hc [class~="text-gray-500"] { color: #374151 !important; }
+:root.hc [class~="text-gray-600"] { color: #1f2937 !important; }
+
+:root.hc.dark [class~="dark:text-dark-300"] { color: #f1f5f9 !important; }
+:root.hc.dark [class~="dark:text-dark-400"] { color: #e2e8f0 !important; }
+:root.hc.dark [class~="dark:text-dark-500"] { color: #cbd5e1 !important; }
+
+/* Stronger delineation for cards, inputs and dividers. */
+:root.hc [class~="border-gray-100"],
+:root.hc [class~="border-gray-200"] { border-color: #374151 !important; }
+:root.hc.dark [class~="dark:border-dark-600"],
+:root.hc.dark [class~="dark:border-dark-700"] { border-color: #cbd5e1 !important; }
+
+/* Always underline links in higher-contrast mode (reinforces 1.4.1). */
+:root.hc main a,
+:root.hc .prose-light a,
+:root.hc .prose-dark a {
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+/* Thicker focus ring in higher-contrast mode. */
+:root.hc :where(a, button, input, select, textarea, [role="radio"], [role="switch"], [tabindex]):focus-visible {
+  outline-width: 3px;
+}

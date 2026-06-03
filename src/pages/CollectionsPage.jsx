@@ -431,7 +431,7 @@ function SearchBar({ value, onChange, count, term }) {
         <input
           type="text" placeholder="Search targets…" value={value}
           onChange={e => onChange(e.target.value)}
-          className="w-full pl-9 pr-9 py-2.5 rounded-xl border border-gray-200 dark:border-dark-600 bg-white dark:bg-dark-800 text-gray-800 dark:text-dark-100 placeholder-gray-400 dark:placeholder-dark-500 text-sm focus:outline-none focus:ring-2 focus:ring-accent-primary"
+          className="w-full pl-9 pr-9 py-2.5 rounded-xl border border-gray-200 dark:border-dark-600 bg-white dark:bg-dark-800 text-gray-800 dark:text-dark-100 placeholder-gray-500 dark:placeholder-dark-400 text-sm focus:outline-none focus:ring-2 focus:ring-accent-primary"
         />
         {value && (
           <button onClick={() => onChange('')}
