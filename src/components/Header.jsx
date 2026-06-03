@@ -24,6 +24,24 @@ function CloseIcon() {
   );
 }
 
+function AccessibilityButton() {
+  return (
+    <button
+      className="p-2 rounded-full border border-dark-600 text-dark-300 hover:bg-dark-700 hover:text-dark-100 bg-transparent transition-colors"
+      aria-label="Accessibility options"
+      title="Accessibility options"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="4" r="1.5" />
+        <line x1="12" y1="6" x2="12" y2="14" />
+        <line x1="6" y1="9.5" x2="18" y2="9.5" />
+        <line x1="12" y1="14" x2="8.5" y2="21" />
+        <line x1="12" y1="14" x2="15.5" y2="21" />
+      </svg>
+    </button>
+  );
+}
+
 export default function Header({ theme, onToggleTheme }) {
   const lang = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -65,15 +83,17 @@ export default function Header({ theme, onToggleTheme }) {
               ))}
             </nav>
 
-            {/* Controls: Language Switcher + Theme Toggle (desktop) */}
+            {/* Controls: Language Switcher + Theme Toggle + Accessibility (desktop) */}
             <div className="hidden md:flex items-center gap-3 flex-shrink-0">
               <LanguageSwitcher />
               <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+              <AccessibilityButton />
             </div>
 
-            {/* Mobile: Theme Toggle + Hamburger */}
+            {/* Mobile: Theme Toggle + Accessibility + Hamburger */}
             <div className="md:hidden flex items-center gap-2">
               <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+              <AccessibilityButton />
               <button
                 className="p-2 text-dark-300 hover:text-dark-100 transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
